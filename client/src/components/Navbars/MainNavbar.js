@@ -9,7 +9,9 @@ import {
   NavItem,
   Nav,
   Container,
-  UncontrolledTooltip
+  UncontrolledTooltip,
+  Row,
+  Col
 } from "reactstrap";
 import './header.css'
 function MainNavbar() {
@@ -46,14 +48,25 @@ function MainNavbar() {
           }}
         />
       ) : null}
-      <Navbar className={"fixed-top " + navbarColor} expand="lg" color="info">
+      {/* <Navbar style={{marginBottom: 0}} className={"header-top bg-nav "} >
+        <Container>
+            <Row>
+            <Col xlg="4">Follow us on</Col>
+            <Col xlg="8">
+              <Row>
+                <Col xlg="4">Email: Gdinitiative@gmail.com</Col>
+                <Col xlg="4">Phone: 08022821743</Col>
+                <Col xlg="4">08083749308</Col>
+              </Row>
+            </Col>
+          </Row>
+        </Container>
+      </Navbar> */}
+      <Navbar style={{marginBottom: 0}}  className={'fixed-top '+navbarColor} expand="lg" color="info">
         <Container>
           <div className="navbar-translate">
-            <NavbarBrand
-              id="navbar-brand"
-            >
-              <Link to="/">GD-Initiative</Link>
-            </NavbarBrand>
+           
+              <Link className="navbar-brand" id="navbar-brand" to="/">GD-Initiative</Link>
             <button
               className="navbar-toggler navbar-toggler"
               onClick={() => {

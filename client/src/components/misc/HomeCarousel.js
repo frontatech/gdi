@@ -8,7 +8,8 @@ import {
   Col,
   Carousel,
   CarouselItem,
-  CarouselIndicators
+  CarouselIndicators,
+  Button
 } from "reactstrap";
 
 // core components
@@ -57,7 +58,7 @@ function HomeCarousel() {
   return (
     <>
       <div  className="" id="carousel">
-          <Row className="justify-content-center">
+          <Row className="justify-content-center carousel-section">
             <Col lg="12" md="12">
               <Carousel
               style={{maxHeight:'100vh',height: '100vh'}}
@@ -76,12 +77,24 @@ function HomeCarousel() {
                       onExiting={onExiting}
                       onExited={onExited}
                       key={item.src}
+                      slide={false}
                     >
                       <img style={{height: '100vh',width: '100vw'}} src={item.src} alt={item.altText} />
-                      <div className="carousel-caption d-none d-md-block">
-                        <h1>No one has ever become poor by giving</h1>
-                        <h5>{item.caption}</h5>
-                      </div>
+                      <div className="carousel-caption">
+                        <h1 className="text-white title"><strong>Grassroots <span className="text-yellow">Development</span> Initiative</strong></h1>
+
+                        <h5 className="subtitle"><span className="text-red spanFor">For</span> <em><Wave text="Good Governance & Capacity Building!" /></em> </ h5>
+                        <Button
+                          className="btn-round"
+                          color="info"
+                          href="/"
+                          
+                          size="lg"
+                          
+                        >
+                          Learn More About Us
+                        </Button>
+                    </div>
                     </CarouselItem>
                   );
                 })}
