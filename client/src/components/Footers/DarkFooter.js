@@ -2,54 +2,119 @@
 import React from "react";
 
 // reactstrap components
-import { Container } from "reactstrap";
+import { Container, Row, Col,Input,Button,Navbar,
+  NavItem,
+  NavLink,
+  Nav,} from "reactstrap";
+import { Link } from "react-router-dom";
 
 function DarkFooter() {
   return (
     <footer className="footer" data-background-color="black">
       <Container>
-        <nav>
+        <Row>
+          <Col lg="6"><h2 className="text-uppercase mb-4 font-weight-bold title">Subscribe To Our Newsletter</h2></Col>
+          <Col lg="6"><div className="d-flex">
+            <Input defaultValue="" placeholder="Enter Your Email Address" type="address"
+                    size="sm"/>
+                  <Button
+                  className="btn-success btn-round"
+                  color="warning"
+                  type="submit"
+                  onClick={e => e.preventDefault()}
+                  size="lg"
+                >
+                  Subscribe
+                </Button></div></Col>
+        </Row>
+        <hr/>
+        <Row>
+            
+          <Col lg="4">
+          <h5 className="text-uppercase mb-4 mt-3 font-weight-bold">
+              About <span className="text-yellow">Grassroots Development Initiative</span>
+            </h5>
+            <p className="font-weight text-justify">
+              We are a software development company focused on building & deploying both individual and enterprise sofware solutions ranging from E-learning apps, E-commerce sites and many more. We work hand in hand with our clients to deliver & provide elegant solutions. We help innovators to successfully build and lauch new companies by ensuring that we design, develop and deploy our apps based on user requirement. We help businesses create a wonderful and beautiful online presence. 
+            </p>
+          </Col>
+          <Col lg="4">
+          <h5 className="text-uppercase mb-4 mt-3 font-weight-bold text-yellow">
+              Quick Links
+              
+            </h5>
+            <ul className="d-inline-block">
+                <li><Link to="/blog">Blog</Link></li><hr/>
+                <li><Link to="/about-us">About Us</Link></li><hr/>
+                <li><Link to="/donate">Donate</Link></li><hr/>
+                <li><Link to="/contact-us">Contact Us</Link></li><hr/>
+                <li><Link to="/events">Events</Link></li><hr/>
+                <li><Link to="/our-services">Our Services</Link></li><hr/>
+                <li><Link to="/gallery">Gallery</Link></li>
+              </ul>
+          </Col>
+          <Col lg="4">
+          <h5 className="text-uppercase mb-4 mt-3 font-weight-bold text-yellow">Contacts
+            </h5>
+            <address>
+            <ul className="d-inline-block">
+                <li>No. 5 Amagu Street besides Unity Square, Abakaliki, Ebonyi State, Nigeria</li><hr/>
+                <li>gdinitiative@gmail.com</li><hr/>
+                <li>+234-8022821743</li><hr/>
+                <li>Follow Us On: </li>
+              </ul>
+            </address>
+            <Nav className="ml-auto d-inline" navbar>
+                    <NavItem>
+                      <NavLink href="#pablo" className="p-2" onClick={e => e.preventDefault()}>
+                        <i className="fab text-blue fa-3x fa-facebook-square"></i>
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink href="#pablo" className="p-2" onClick={e => e.preventDefault()}>
+                        <i className="fab text-info fa-3x fa-twitter"></i>
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink href="#pablo" className="p-2" onClick={e => e.preventDefault()}>
+                        <i className="fab fa-3x fa-google-plus"></i>
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink href="#pablo"className="p-2" onClick={e => e.preventDefault()}>
+                        <i className="fab fa-3x fa-instagram"></i>
+                      </NavLink>
+                    </NavItem>
+                  </Nav>
+          </Col>
+        </Row><hr/>
+      
+        <nav className="mb-1">
           <ul>
             <li>
               <a
-                href="https://www.creative-tim.com?ref=nukr-dark-footer"
-                target="_blank"
+                href="/"
               >
-                Creative Tim
+                Grassroots <span title="GDI" className="text-yellow">Development</span> Initiative
               </a>
             </li>
-            <li>
-              <a
-                href="http://presentation.creative-tim.com?ref=nukr-dark-footer"
-                target="_blank"
-              >
-                About Us
-              </a>
-            </li>
-            <li>
-              <a
-                href="http://blog.creative-tim.com?ref=nukr-dark-footer"
-                target="_blank"
-              >
-                Blog
-              </a>
-            </li>
+            
           </ul>
         </nav>
         <div className="copyright" id="copyright">
-          © {new Date().getFullYear()}, Designed by{" "}
+          © {new Date().getFullYear()},
           <a
-            href="https://www.invisionapp.com?ref=nukr-dark-footer"
+            href="https://www.gdinitiative.com"
             target="_blank"
           >
-            Invision
+            GDI
           </a>
-          . Coded by{" "}
+          . Developed by {" "}
           <a
-            href="https://www.creative-tim.com?ref=nukr-dark-footer"
+            href="https://www.frontatech.com"
             target="_blank"
           >
-            Creative Tim
+            Frontatech
           </a>
           .
         </div>

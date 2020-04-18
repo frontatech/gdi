@@ -17,7 +17,7 @@ import {
 
 // core components
 
-function HomeSection5() {
+function SectionHelp() {
   const [iconPills, setIconPills] = React.useState("1");
   const [pills, setPills] = React.useState("1");
   return (
@@ -93,4 +93,4 @@ function HomeSection5() {
   );
 }
 
-export default HomeSection5;
+export default SectionHelp;

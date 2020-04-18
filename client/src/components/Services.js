@@ -3,7 +3,10 @@ import IndexHeader from './Headers/IndexHeader'
 
 const Services = () => {
     return (
-        <IndexHeader />
+        <div className="wrapper">
+            <IndexHeader />
+        </div>
+
     )
 }
 

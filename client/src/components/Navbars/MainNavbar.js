@@ -138,11 +138,11 @@ function MainNavbar() {
               </NavItem>
               <NavItem>
                 <Link
-                  to="/management"
+                  to="/events"
                   className="nav-link"
                 >
                   <i className="now-ui-icons arrows-1_cloud-download-93"></i>
-                  <p>Management</p>
+                  <p>Events</p>
                 </Link>
               </NavItem>
               <NavItem>

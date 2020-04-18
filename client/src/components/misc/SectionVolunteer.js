@@ -1,6 +1,6 @@
 import React from 'react'
 import {Button} from 'reactstrap'
-const HomeSection4 = () => {
+const SectionVolunteer = () => {
     return (
         <>
          <div
@@ -27,4 +27,4 @@ const HomeSection4 = () => {
     )
 }
 
-export default HomeSection4
+export default SectionVolunteer

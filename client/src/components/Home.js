@@ -2,13 +2,13 @@ import React, { Fragment } from 'react'
 import HomeCarousel from './misc/HomeCarousel'
 import HomeSection from './misc/HomeSection'
 import HomeSection1 from './misc/HomeSection1'
-import HomeSection2 from './misc/HomeSection2'
-import HomeSection3 from './misc/HomeSection3'
+import SectionCoreValues from './misc/SectionCoreValues'
+import SectionPartners from './misc/SectionPartners'
 import LatestPosts from './Blog/LatestPosts'
-import HomeSection4 from './misc/HomeSection4'
+import SectionVolunteer from './misc/SectionVolunteer'
 import RecentPosts from './Blog/RecentPosts'
-import HomeSection5 from './misc/HomeSection5'
-import Managers from './misc/Managers'
+import SectionHelp from './misc/SectionHelp'
+import SectionManagers from './misc/SectionManagers'
 
 const Home = () => {
     return (
@@ -16,12 +16,12 @@ const Home = () => {
             
             <HomeCarousel />
             <HomeSection1 />
-            <HomeSection2 />
-            <HomeSection4 />
-            <HomeSection3 />
+            <SectionCoreValues />
+            <SectionVolunteer />
+            <SectionPartners />
             <RecentPosts />
-            <HomeSection5 />
-            <Managers />
+            <SectionHelp />
+            <SectionManagers />
             <HomeSection />
         </Fragment>
     )
