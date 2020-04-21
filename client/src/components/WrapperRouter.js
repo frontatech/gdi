@@ -8,10 +8,6 @@ import Services from './Services'
 import Contact from './Contact'
 import FooterPage from './Footer'
 import Blog from './Blog';
-// import PostDetails from './blog/Post_Details';
-// import { CourseProvider } from './course/CourseContext';
-// import CourseDetails from './course/Course_Details';
-import Login from './Login'
 import Components from 'views/Index'
 import AdminLayout from "../admin/layouts/Admin.js";
 import AuthLayout from "../admin/layouts/Auth.js";
@@ -20,12 +16,13 @@ import LoginPage from 'views/examples/LoginPage'
 import ProfilePage from 'views/examples/ProfilePage'
 import LandingPage from 'views/examples/LandingPage'
 import Donate from './Donate'
+import PostDetails from './Blog/Post_details'
 
 const WrapperRouter = ({location}) => {
-    const [mainSitePath, setMainSitePath] = useState(['/','/about-us','/blog','/our-services','/gallery','/management','/contact-us','/partnership','/events','/donate'])
+    const [mainSitePath, setMainSitePath] = useState(['/','/about-us','/blog','/our-services','/gallery','/management','/contact-us','/partnership','/events','/donate','/post_details/'])
     return (
         <Fragment>
-            {mainSitePath.indexOf(location.pathname) > -1 ? <MainNavbar /> : (null)}
+            {mainSitePath.indexOf(location.pathname) > -1 || mainSitePath.indexOf(location.pathname.split('/')[1]) ? <MainNavbar /> : (null)}
             <Switch>
                 <Route exact path="/" component={Home} />
                 <Route exact path="/components" component={Components} />
@@ -39,14 +36,14 @@ const WrapperRouter = ({location}) => {
                 <Route exact path="/profile" component={ProfilePage} />
                 <Route exact path="/landing" component={LandingPage} />
                 <Route exact path="/donate" component={Donate} />
-                {/* <Route exact path="/post_details/:id" component={PostDetails} /> */}
+                <Route exact path="/post_details/:slug" component={PostDetails} />
                 {/* <Route exact path="/course_details/:id" component={CourseDetails} /> */}
                 {/* <Route exact path="/Login" component={Login} /> */}
                 <Route path="/admin" render={props => <AdminLayout {...props} />} />
                 <Route path="/auth" render={props => <AuthLayout {...props} />} />
 
             </Switch>
-            {mainSitePath.indexOf(location.pathname) > -1 ? <FooterPage /> : (null)}
+            {mainSitePath.indexOf(location.pathname) > -1 || mainSitePath.indexOf(location.pathname.split('/')[1]) ? <FooterPage /> : (null)}
         </Fragment>
     )
 }

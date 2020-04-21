@@ -1,6 +1,8 @@
 import React from 'react'
+import ScrollTop from './misc/ScrollTop'
 
-const Contact = () => {
+const Contact = ({location}) => {
+    ScrollTop(location)
     return (
         <div>
             

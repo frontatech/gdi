@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React from "react";
+import React,{useState} from "react";
 
 // reactstrap components
 import { Container, Row, Col,Input,Button,Navbar,
@@ -7,25 +7,63 @@ import { Container, Row, Col,Input,Button,Navbar,
   NavLink,
   Nav,} from "reactstrap";
 import { Link } from "react-router-dom";
-
+import axios from 'axios'
 function DarkFooter() {
+  
+const [username, setUsername] = useState('')
+const [userEmail, setUserEmail] = useState('')
+const [nameError, setNameError] = useState('')
+const [emailError, setEmailError] = useState('')
+const [loader, setLoader] = useState(false)
+const updateEmail = (e) =>{
+    setUserEmail(e.target.value)
+    setEmailError('')
+}
+const resetFormInputs = () =>{
+    setUserEmail('')
+}
+const resetFormInputErrors = (data) =>{
+    setEmailError(data.emailError)
+}
+
+const handleSubmit = (e) =>{
+    e.preventDefault()
+    if(userEmail === "") setEmailError("Enter Your Email Address")
+    if(userEmail !== ""){
+        setLoader(true)
+        resetFormInputErrors({emailError:'',nameError: ''})
+        axios.post('/newsletter',{name:username,email:userEmail}).then(res =>{
+            const data =  res.data
+            setLoader(false)
+            if(data.status){
+                resetFormInputs()
+                return setEmailError("Form Submitted Successfully")
+            }
+            resetFormInputErrors(data)
+        }).catch(error =>{
+            setEmailError("An error occurred, try again!")
+            setLoader(false)
+        })
+    }
+    
+}
   return (
     <footer className="footer" data-background-color="black">
       <Container>
         <Row>
           <Col lg="6"><h2 className="text-uppercase mb-4 font-weight-bold title">Subscribe To Our Newsletter</h2></Col>
           <Col lg="6"><div className="d-flex">
-            <Input defaultValue="" placeholder="Enter Your Email Address" type="address"
+            <Input value={userEmail} onChange={updateEmail} placeholder="Enter Your Email Address" type="text"
                     size="sm"/>
                   <Button
                   className="btn-success btn-round"
                   color="warning"
                   type="submit"
-                  onClick={e => e.preventDefault()}
+                  onClick={handleSubmit}
                   size="lg"
                 >
                   Subscribe
-                </Button></div></Col>
+                </Button></div><span>{emailError}</span></Col>
         </Row>
         <hr/>
         <Row>

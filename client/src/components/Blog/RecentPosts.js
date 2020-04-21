@@ -132,7 +132,7 @@ const RecentPosts = ({showAnOnlineUser}) => {
                                 <img
                   alt="..."
                   className="rounded img-raised"
-                  src={require("assets/img/julie.jpg")}
+                  src={require("assets/img/bg5.jpg")}
                 ></img>
 
                                 {/* <h4 className="font-weight-bold mt-1 text-center">hello</h4> */}

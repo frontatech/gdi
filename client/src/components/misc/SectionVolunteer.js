@@ -1,5 +1,6 @@
 import React from 'react'
 import {Button} from 'reactstrap'
+import { Link } from 'react-router-dom'
 const SectionVolunteer = () => {
     return (
         <>
@@ -17,7 +18,7 @@ const SectionVolunteer = () => {
         </h1>
         <p className="text-white text-center">Join your hand with us for a better life and beautiful future</p>
         <div className="text-center">
-        <Button className="btn-round text-center" color="danger" type="button">
+        <Button className="btn-round text-center" tag={Link} color="danger" to="/donate">
             Donate Now
         </Button>
         </div>

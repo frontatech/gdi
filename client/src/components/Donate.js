@@ -1,7 +1,9 @@
 import React from 'react'
 import DonateMain from './misc/DonateMain'
+import ScrollTop from './misc/ScrollTop'
 
-const Donate = () => {
+const Donate = ({location}) => {
+    ScrollTop(location)
     return (
         <div className="wrapper">
             <DonateMain />

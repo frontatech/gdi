@@ -13,11 +13,12 @@ import {
 } from "reactstrap";
 
 // core components
-import ExamplesNavbar from "./Navbars/ExamplesNavbar.js";
 import LandingPageHeader from "./Headers/LandingPageHeader.js";
 import DefaultFooter from "./Footers/DefaultFooter.js";
+import ScrollTop from "./misc/ScrollTop.js";
 
-function About() {
+function About({location}) {
+  ScrollTop(location)
   const [firstFocus, setFirstFocus] = React.useState(false);
   const [lastFocus, setLastFocus] = React.useState(false);
   React.useEffect(() => {
