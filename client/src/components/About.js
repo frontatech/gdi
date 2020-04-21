@@ -1,5 +1,6 @@
 import React from "react";
-
+import about2 from '../assets/img/about2.jpg';
+import pixicon from '../assets/img/pixicon.png';
 // reactstrap components
 import {
   Button,
@@ -11,7 +12,9 @@ import {
   Row,
   Col
 } from "reactstrap";
-
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'bootstrap-css-only/css/bootstrap.min.css';
+import 'mdbreact/dist/css/mdb.css';
 // core components
 import ExamplesNavbar from "./Navbars/ExamplesNavbar.js";
 import LandingPageHeader from "./Headers/LandingPageHeader.js";
@@ -34,291 +37,209 @@ function About() {
       
       <div className="wrapper">
         <LandingPageHeader />
-        <div className="section section-about-us">
-          <Container>
-            <Row>
-              <Col className="ml-auto mr-auto text-center" md="8">
-                <h2 className="title">Who we are?</h2>
-                <h5 className="description">
-                  According to the National Oceanic and Atmospheric
-                  Administration, Ted, Scambos, NSIDClead scentist, puts the
-                  potentially record low maximum sea ice extent tihs year down
-                  to low ice extent in the Pacific and a late drop in ice extent
-                  in the Barents Sea.
-                </h5>
-              </Col>
-            </Row>
-            <div className="separator separator-primary"></div>
-            <div className="section-story-overview">
-              <Row>
-                <Col md="6">
-                  <div
-                    className="image-container image-left"
-                    style={{
-                      backgroundImage:
-                        "url(" + require("assets/img/login.jpg") + ")"
-                    }}
-                  >
-                    <p className="blockquote blockquote-info">
-                      "Over the span of the satellite record, Arctic sea ice has
-                      been declining significantly, while sea ice in the
-                      Antarctichas increased very slightly" <br></br>
-                      <br></br>
-                      <small>-NOAA</small>
-                    </p>
-                  </div>
-                  <div
-                    className="image-container"
-                    style={{
-                      backgroundImage:
-                        "url(" + require("assets/img/bg3.jpg") + ")"
-                    }}
-                  ></div>
-                </Col>
-                <Col md="5">
-                  <div
-                    className="image-container image-right"
-                    style={{
-                      backgroundImage:
-                        "url(" + require("assets/img/bg1.jpg") + ")"
-                    }}
-                  ></div>
-                  <h3>
-                    So what does the new record for the lowest level of winter
-                    ice actually mean
-                  </h3>
-                  <p>
-                    The Arctic Ocean freezes every winter and much of the
-                    sea-ice then thaws every summer, and that process will
-                    continue whatever happens with climate change. Even if the
-                    Arctic continues to be one of the fastest-warming regions of
-                    the world, it will always be plunged into bitterly cold
-                    polar dark every winter. And year-by-year, for all kinds of
-                    natural reasons, there’s huge variety of the state of the
-                    ice.
-                  </p>
-                  <p>
-                    For a start, it does not automatically follow that a record
-                    amount of ice will melt this summer. More important for
-                    determining the size of the annual thaw is the state of the
-                    weather as the midnight sun approaches and temperatures
-                    rise. But over the more than 30 years of satellite records,
-                    scientists have observed a clear pattern of decline,
-                    decade-by-decade.
-                  </p>
-                  <p>
-                    The Arctic Ocean freezes every winter and much of the
-                    sea-ice then thaws every summer, and that process will
-                    continue whatever happens with climate change. Even if the
-                    Arctic continues to be one of the fastest-warming regions of
-                    the world, it will always be plunged into bitterly cold
-                    polar dark every winter. And year-by-year, for all kinds of
-                    natural reasons, there’s huge variety of the state of the
-                    ice.
-                  </p>
-                </Col>
-              </Row>
-            </div>
+   <Container>
+    <section className="my-5">    
+<Row>
+
+        <Col md="6">
+     <img src={about2}class="img-fluid z-depth-1 animated rollIn reveal" alt="Responsive image"/>
+                   </Col>
+   <Col md="6">
+
+ <h2 className="h1-responsive font-weight-bold text-uppercase mt-2">  
+ WE ARE A GLOBAL LEADER WITHIN A WORLDWIDE MOVEMENT DEDICATED TO ENDING POVERTY</h2>
+
+ <p className="blue-grey-text">
+
+Lorem ipsum dolor sit amet, consectetur
+ adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+Duis aute irure dolor in reprehenderit in voluptate velit esse 
+cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+  
+
+  </Col>
+          </Row>
+          </section>
           </Container>
+    <section className="my-5"> 
+    <div className="jumbotron">
+<Container>
+    <Row>
+
+  <Col md="4">
+    <h3 className="text-uppercase font-weight-bold mission ">our mission</h3>
+   <img src={pixicon}class="img-fluid z-depth-1" alt="Responsive image"/>
+    <p className="black-text">
+We work around the globe to save lives, defeat poverty and achieve social justice..</p>
+                   </Col>
+   <Col md="4">
+  <h3 className="text-uppercase font-weight-bold mission ">our vision</h3>
+   <img src={pixicon}class="img-fluid z-depth-1" alt="Responsive image"/>
+    <p className="black-text">
+
+We seek a world of hope, tolerance and social justice, where poverty has been overcome and all people live with dignity and security.</p>
+  </Col>
+   <Col md="4">
+
+  <h3 className="text-uppercase font-weight-bold mission ">our value</h3>
+   <img src={pixicon}class="img-fluid z-depth-1" alt="Responsive image"/>
+ <p className="black-text">
+
+We believe in urgent action, innovation, 
+and the necessity of transformation—within the world and our own organization.</p>
+  </Col>
+
+
+    </Row> 
+    </Container>
+       </div>  
+             </section>
+
+<section class="my-1">
+<h2 className="text-capitalize font-weight-bold text-center border_design">aim and objectives</h2>
+ 
+  
+
+
+  <div class="row">
+
+
+    <div class="col-md-4">
+
+
+      <div class="row mb-3">
+
+
+        <div class="col-2">
+          <i class="fas fa-2x fa-flag-checkered deep-purple-text"></i>
         </div>
-        <div className="section section-team text-center">
-          <Container>
-            <h2 className="title">Here is our team</h2>
-            <div className="team">
-              <Row>
-                <Col md="4">
-                  <div className="team-player">
-                    <img
-                      alt="..."
-                      className="rounded-circle img-fluid img-raised"
-                      src={require("assets/img/avatar.jpg")}
-                    ></img>
-                    <h4 className="title">Romina Hadid</h4>
-                    <p className="category text-info">Model</p>
-                    <p className="description">
-                      You can write here details about one of your team members.
-                      You can give more details about what they do. Feel free to
-                      add some{" "}
-                      <a href="#pablo" onClick={e => e.preventDefault()}>
-                        links
-                      </a>{" "}
-                      for people to be able to follow them outside the site.
-                    </p>
-                    <Button
-                      className="btn-icon btn-round"
-                      color="info"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                    >
-                      <i className="fab fa-twitter"></i>
-                    </Button>
-                    <Button
-                      className="btn-icon btn-round"
-                      color="info"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                    >
-                      <i className="fab fa-instagram"></i>
-                    </Button>
-                    <Button
-                      className="btn-icon btn-round"
-                      color="info"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                    >
-                      <i className="fab fa-facebook-square"></i>
-                    </Button>
-                  </div>
-                </Col>
-                <Col md="4">
-                  <div className="team-player">
-                    <img
-                      alt="..."
-                      className="rounded-circle img-fluid img-raised"
-                      src={require("assets/img/ryan.jpg")}
-                    ></img>
-                    <h4 className="title">Ryan Tompson</h4>
-                    <p className="category text-info">Designer</p>
-                    <p className="description">
-                      You can write here details about one of your team members.
-                      You can give more details about what they do. Feel free to
-                      add some{" "}
-                      <a href="#pablo" onClick={e => e.preventDefault()}>
-                        links
-                      </a>{" "}
-                      for people to be able to follow them outside the site.
-                    </p>
-                    <Button
-                      className="btn-icon btn-round"
-                      color="info"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                    >
-                      <i className="fab fa-twitter"></i>
-                    </Button>
-                    <Button
-                      className="btn-icon btn-round"
-                      color="info"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                    >
-                      <i className="fab fa-linkedin"></i>
-                    </Button>
-                  </div>
-                </Col>
-                <Col md="4">
-                  <div className="team-player">
-                    <img
-                      alt="..."
-                      className="rounded-circle img-fluid img-raised"
-                      src={require("assets/img/eva.jpg")}
-                    ></img>
-                    <h4 className="title">Eva Jenner</h4>
-                    <p className="category text-info">Fashion</p>
-                    <p className="description">
-                      You can write here details about one of your team members.
-                      You can give more details about what they do. Feel free to
-                      add some{" "}
-                      <a href="#pablo" onClick={e => e.preventDefault()}>
-                        links
-                      </a>{" "}
-                      for people to be able to follow them outside the site.
-                    </p>
-                    <Button
-                      className="btn-icon btn-round"
-                      color="info"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                    >
-                      <i className="fab fa-google-plus"></i>
-                    </Button>
-                    <Button
-                      className="btn-icon btn-round"
-                      color="info"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                    >
-                      <i className="fab fa-youtube"></i>
-                    </Button>
-                    <Button
-                      className="btn-icon btn-round"
-                      color="info"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                    >
-                      <i className="fab fa-twitter"></i>
-                    </Button>
-                  </div>
-                </Col>
-              </Row>
-            </div>
-          </Container>
+    
+
+      
+        <div class="col-10">
+          <h5 class="font-weight-bold mb-3">International</h5>
+          <p class="grey-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores
+            nam, aperiam minima assumenda deleniti hic.</p>
         </div>
-        <div className="section section-contact-us text-center">
-          <Container>
-            <h2 className="title">Want to work with us?</h2>
-            <p className="description">Your project is very important to us.</p>
-            <Row>
-              <Col className="text-center ml-auto mr-auto" lg="6" md="8">
-                <InputGroup
-                  className={
-                    "input-lg" + (firstFocus ? " input-group-focus" : "")
-                  }
-                >
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <i className="now-ui-icons users_circle-08"></i>
-                    </InputGroupText>
-                  </InputGroupAddon>
-                  <Input
-                    placeholder="First Name..."
-                    type="text"
-                    onFocus={() => setFirstFocus(true)}
-                    onBlur={() => setFirstFocus(false)}
-                  ></Input>
-                </InputGroup>
-                <InputGroup
-                  className={
-                    "input-lg" + (lastFocus ? " input-group-focus" : "")
-                  }
-                >
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <i className="now-ui-icons ui-1_email-85"></i>
-                    </InputGroupText>
-                  </InputGroupAddon>
-                  <Input
-                    placeholder="Email..."
-                    type="text"
-                    onFocus={() => setLastFocus(true)}
-                    onBlur={() => setLastFocus(false)}
-                  ></Input>
-                </InputGroup>
-                <div className="textarea-container">
-                  <Input
-                    cols="80"
-                    name="name"
-                    placeholder="Type a message..."
-                    rows="4"
-                    type="textarea"
-                  ></Input>
-                </div>
-                <div className="send-button">
-                  <Button
-                    block
-                    className="btn-round"
-                    color="info"
-                    href="#pablo"
-                    onClick={e => e.preventDefault()}
-                    size="lg"
-                  >
-                    Send Message
-                  </Button>
-                </div>
-              </Col>
-            </Row>
-          </Container>
+
+
+      </div>
+  
+
+  
+      <div class="row mb-3">
+
+       
+        <div class="col-2">
+          <i class="fas fa-2x fa-flask deep-purple-text"></i>
         </div>
+     
+  
+        <div class="col-10">
+          <h5 class="font-weight-bold mb-3">Experimental</h5>
+          <p class="grey-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores
+            nam, aperiam minima assumenda deleniti hic.</p>
+        </div>
+
+
+      </div>
+ 
+
+      <div class="row mb-md-0 mb-3">
+
+
+        <div class="col-2">
+          <i class="fas fa-2x fa-glass-martini deep-purple-text"></i>
+        </div>
+     
+
+        <div class="col-10">
+          <h5 class="font-weight-bold mb-3">Relaxing</h5>
+          <p class="grey-text mb-md-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit
+            maiores nam, aperiam minima assumenda deleniti hic.</p>
+        </div>
+    
+
+      </div>
+ 
+
+    </div>
+
+
+
+    <div class="col-md-4 text-center">
+      <img class="img-fluid" src="https://mdbootstrap.com/img/Mockups/Transparent/Small/iphone-portfolio1.png"
+        alt="Sample image"/>
+    </div>
+ 
+    <div class="col-md-4">
+
+
+      <div class="row mb-3">
+
+
+        <div class="col-2">
+          <i class="far fa-2x fa-heart deep-purple-text"></i>
+        </div>
+
+
+  
+        <div class="col-10">
+          <h5 class="font-weight-bold mb-3">Beloved</h5>
+          <p class="grey-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores
+            nam, aperiam minima assumenda deleniti hic.</p>
+        </div>
+  
+
+      </div>
+
+
+      <div class="row mb-3">
+
+        <div class="col-2">
+          <i class="fas fa-2x fa-bolt deep-purple-text"></i>
+        </div>
+     
+
+     
+        <div class="col-10">
+          <h5 class="font-weight-bold mb-3">Rapid</h5>
+          <p class="grey-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores
+            nam, aperiam minima assumenda deleniti hic.</p>
+        </div>
+     
+
+      </div>
+   
+      <div class="row">
+
+    
+        <div class="col-2">
+          <i class="fas fa-2x fa-magic deep-purple-text"></i>
+        </div>
+    
+
+        <div class="col-10">
+          <h5 class="font-weight-bold mb-3">Magical</h5>
+          <p class="grey-text mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit
+            maiores nam, aperiam minima assumenda deleniti hic.</p>
+        </div>
+ 
+
+      </div>
+ 
+
+    </div>
+
+
+  </div>
+
+
+</section>
+
+            
+
         <DefaultFooter />
       </div>
     </>

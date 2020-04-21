@@ -67,3 +67,26 @@
         top: 0
     }
 }
+
+  .anchortext span{
+    color: #77b81e;
+  }
+  .title {
+     font-family: Roboto;
+    font-size: 2rem;
+    line-height: 28px;
+  }
+  .mission{
+        font-family: "Barlow Condensed", -apple-system, BlinkMacSystemFont, Sans-serif;
+      font-size: 1.5rem;
+  }
+    .border_design:after{
+    text-align: center;
+    content: '';
+    display: block;
+    margin: 10px auto;
+    width: 60px;
+    border-top: 2px solid #113a63;
+
+  }
+  
