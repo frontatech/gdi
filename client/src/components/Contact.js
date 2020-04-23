@@ -2,11 +2,11 @@ import React from 'react'
 import ScrollTop from './misc/ScrollTop'
 import contact from '../assets/img/contact.jpg';
 import {
-
   Container,
   Row
 
 } from "reactstrap";
+
 
 const Contact = ({location}) => {
     ScrollTop(location)
