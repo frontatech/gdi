@@ -1,6 +1,5 @@
-import React, {useState, useEffect} from "react";
+import React, {useEffect,useContext} from "react";
 import { Link,} from "react-router-dom";
-import axios from 'axios'
 // reactstrap components
 import {
   Button,
@@ -12,11 +11,9 @@ import {
 
 // core components
 import LandingPageHeader from "../Headers/LandingPageHeader.js";
+import { PostContext } from "context/PostContext.js";
 function BlogPosts() {
-  const [showPosts, setPosts] = useState([])
-  const [showLoadBtn, setLoadBtn] = useState(false)
-  const [showBtnText, setBtnText] = useState('Load More Posts')
-  const [totalPosts, setTotalPosts] = useState(0)
+  const {posts,showLoadBtn,totalPosts,showBtnText,loadMorePosts} = useContext(PostContext)
   useEffect(() => {
     document.body.classList.add("landing-page");
     document.body.classList.add("sidebar-collapse");
@@ -27,30 +24,6 @@ function BlogPosts() {
     };
   });
   
-    useEffect(() => {
-        axios.get('/posts').then(res =>{
-            console.log(res)
-            setPosts(res.data.posts)
-            setTotalPosts(res.data.total)
-        }).catch(error =>{
-            console.log(error)
-        })
-    }, [])
-    const loadMorePosts = (e) =>{
-        e.preventDefault()
-        setBtnText('Loading...')
-        const lastId = showPosts.slice(-1)[0].post_id
-        axios.post('/loadMorePosts',{lastId}).then(res =>{
-            setBtnText('Load More Posts')
-            if(res.data.length === 0) {
-                setBtnText('No More Posts')
-                return setLoadBtn(false)
-            }
-            setPosts(posts => [...posts,...res.data])
-        }).catch(error =>{
-            console.log(error)
-        })
-    }
   return (
     <>
       
@@ -59,7 +32,7 @@ function BlogPosts() {
         <div className="section section-about-us blog">
           <Container fluid>
             <Row>
-                {showPosts.length !== 0 ? (showPosts.map(post =>
+                {posts.length !== 0 ? (posts.map(post =>
                     (<Col key={post.post_id} className="text-center" lg="4">
                     <Card>
                         <div className="card-body">

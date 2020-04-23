@@ -1,10 +1,12 @@
-import React,{useState} from 'react'
+import React,{useState, useContext} from 'react'
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import {Card, i, Container,Button } from 'reactstrap'
 import backgroundImage from '../../assets/img/bg4.jpg'
+import { PostContext } from 'context/PostContext';
+import { Link } from 'react-router-dom';
 const RecentPosts = ({showAnOnlineUser}) => {
-    const [showPreviousWinners, setShowPreviousWinners] = useState([])
+    const {posts} = useContext(PostContext)
     const responsive = {
         desktop: {
           breakpoint: { max: 3000, min: 1024 },
@@ -22,34 +24,7 @@ const RecentPosts = ({showAnOnlineUser}) => {
           slidesToSlide: 1, // optional, default to 1.
         },
       };
-    const emptyWinners = [{
-        playerAward:4000,
-        playerGameYear:2019,
-        playerId:'kdls',
-        playerPosition: 3,
-        playerReward: '31-12-2019'
-    },
-    {
-        playerAward:4000,
-        playerGameYear:2019,
-        playerId:'kdls',
-        playerPosition: 3,
-        playerReward: '31-12-2019'
-    },
-    {
-        playerAward:4000,
-        playerGameYear:2019,
-        playerId:'kdls',
-        playerPosition: 3,
-        playerReward: '31-12-2019'
-    },{
-        playerAward:4000,
-        playerGameYear:2019,
-        playerId:'kdls',
-        playerPosition: 3,
-        playerReward: '31-12-2019'
-    }
-]
+    const dummpyPost = [{},{},{}]
     
     return (
         <div
@@ -63,9 +38,7 @@ const RecentPosts = ({showAnOnlineUser}) => {
       >
 
 <Container>
-<h2 className="h1-responsive font-weight-bold my-2 text-center">
-          Latest Posts
-        </h2>
+<h2 className="h1-responsive font-weight-bold my-2 text-center">Latest Posts</h2>
     <Carousel
     additionalTransfrom={0}
     arrows
@@ -96,64 +69,42 @@ const RecentPosts = ({showAnOnlineUser}) => {
     >
         
             {
-                showPreviousWinners.length !== 0 ? (showPreviousWinners.map((previousWinner,index) =>{
-                    return (<div key={index} style={{padding:10}}>
+                posts.length !== 0 ? (posts.map(post =>
+                     <div key={post.post_id} style={{padding:10}}>
                         <Card>
-                            <div className="card-image" src={backgroundImage} />
-                            <div className="profile mx-auto">
-                                <img
-                                src="https://mdbootstrap.com/img/Photos/Avatars/img%20(26).jpg"
-                                alt=""
-                                className="rounded-circle img-fluid"
-                                onClick={showAnOnlineUser} id={'supaWinner'+index} data-player={previousWinner.playerId} data-request="previous"
-                                />
-                            </div>
-                            <h4 className="font-weight-bold mt-1 text-center">{previousWinner.playerName}</h4>
-                            <h6 className="blue-text font-weight-bold text-center">
-                                Position {previousWinner.playerPosition}
-                            </h6>
-                            <p className="font-weight-normal">
-                                <i icon="quote-left" className="pr-2" />
-                                Lorem ipsum dolor sit amet, consectetur adipisicing
-                                elit. Quod eos id officiis hic tenetur.
-                            </p>
-                            <div className="grey-text">
+                            <img
+                                alt="..."
+                                className="rounded img-raised"
+                                src={require("assets/img/bg5.jpg")}
+                                ></img>
+                                <h6 className="blue-text font-weight-bold text-center">{post.post_title}</h6>
+                                <div className="grey-text">
                                 <div className="text-center">
-                                {/* <Button  onClick={showAnOnlineUser} id={nextId('supaWinner')} data-player={previousWinner.playerId} data-request="previous" className="btn-rounded btn-sm" gradient="aqua">View</Button> */}
+                                <p>{post.post_descript}</p>
+                                <Button outline color="info" tag={Link} to={`/post_details/${post.post_slug}`} className="btn-round btn-sm ">Read More</Button>
                                 </div>
                             </div>
                         </Card>
-                    </div>)
-                })): (emptyWinners.map((winner,index) =>{
-                    return (
-                        <div key={index} style={{padding:10}}>
-                            <Card>
-                                <div className="card-image" src={backgroundImage} />
-                                <img
-                  alt="..."
-                  className="rounded img-raised"
-                  src={require("assets/img/bg5.jpg")}
-                ></img>
-
-                                {/* <h4 className="font-weight-bold mt-1 text-center">hello</h4> */}
-                                <h6 className="blue-text font-weight-bold text-center">
-                                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-                                </h6>
-                                <p className="font-weight-normal">
-                                    <i icon="quote-left" className="pr-2" />
-                                   
-                                </p>
-                                <div className="grey-text">
-                                    <div className="text-center">
-                                    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit est laborum...</p>
-
-                                    <Button outline color="info" className="btn-round btn-sm ">Read More</Button>
-                                    </div>
-                                </div>
-                            </Card>
+                    </div>
+                )): (dummpyPost.map((post,index) => (
+                    <div key={post.post_id} style={{padding:10}}>
+                    <Card>
+                        <img
+                            alt="..."
+                            className="rounded img-raised"
+                            src={require("assets/img/bg5.jpg")}
+                            ></img>
+                            <h6 className="blue-text font-weight-bold text-center">GDI</h6>
+                            <div className="grey-text">
+                            <div className="text-center">
+                            <p>Oops,It seems your internet is disconnected, check and refresh this page</p>
+                            <Button outline color="info" tag={Link} to={`/post_details/${post.post_slug}`} disabled className="btn-round btn-sm ">Read More</Button>
+                            </div>
                         </div>
+                    </Card>
+                </div>
                     )
-                }))
+                ))
             } 
     </Carousel>
 </Container>

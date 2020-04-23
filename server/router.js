@@ -204,6 +204,25 @@ router.post('/addpost', async (req,res) =>{
 
 })
 // getting a particular post
+router.get("/comments/:slug",(req,res) =>{
+    const slug = req.params.slug
+    if(slug === "")return res.json({error: true})
+    let sql = `SELECT * FROM posts WHERE post_slug = ?`
+    db.query(sql,[slug], (err, result) =>{
+        if(err) return res.json({error: true})
+            const postId = result[0].post_id
+            let query = "SELECT * FROM post_comments WHERE post_id = ? ORDER BY comment_id DESC LIMIT 5; SELECT COUNT(*) as total FROM post_comments WHERE post_id = ?";
+            db.query(query, [postId,postId], (err, data) =>{
+                console.log(data)
+                if(err) return res.json({error: true})
+                if(data.length === 0){
+                    res.json({comments: [],totalComments: 0})  
+                }
+                res.json({comments: data[0],totalComments: data[1][0].total})
+            })
+    })
+})
+// getting a particular post
 router.get("/post_details/:slug",(req,res) =>{
     const slug = req.params.slug
     if(slug === "")return res.json({error: true})

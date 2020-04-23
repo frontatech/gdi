@@ -21,11 +21,11 @@
     font-family: fantasy;
 }
 .row-gutter-0{
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 .col-height{
-    height: 325px;
+    height: 300px !important;
     
 }
 .content-col{
@@ -73,4 +73,42 @@
     transition: 2s ease-in-out;
     border: 2px solid #128246 !important;
 }
-    
+  
+  .title {
+     font-family: Roboto;
+    font-size: 2rem;
+    line-height: 28px;
+  }
+  .mission{
+        font-family: "Barlow Condensed", -apple-system, BlinkMacSystemFont, Sans-serif;
+      font-size: 1.5rem;
+  }
+    .border_design:after{
+    text-align: center;
+    content: '';
+    display: block;
+    margin: 10px auto;
+    width: 60px;
+    border-top: 2px solid #113a63;
+
+  }
+  .blog .card:hover{
+    transform: scale(1);
+    transition: 2s ease-in-out;
+    border: 2px solid #128246 !important;
+}
+.event-date {
+    position: absolute;
+    left: 0px;
+    top: 9px;
+    width: 120px;
+    height: 90px;
+    background: #08a74f;
+    font-size: 20px;
+    line-height: 30px;
+    color: #ffffff !important;
+    font-weight: 500;
+    text-align: center;
+    padding: 17px 0px;
+    border: 5px double #ecd;
+}

@@ -1,6 +1,5 @@
-import React, {useState, useEffect, Fragment} from "react";
+import React, {Fragment, useContext} from "react";
 import { Link,} from "react-router-dom";
-import axios from 'axios'
 // reactstrap components
 import {
   Button,
@@ -11,20 +10,13 @@ import {
   CardHeader,
   CardBody
 } from "reactstrap";
+import { PostContext } from "context/PostContext";
 
 // core components
 
-function SuggestedPosts() {
-    const [showPosts, setPosts] = useState([])
-    useEffect(() => {
-        axios.get('/posts').then(res =>{
-            console.log(res)
-            setPosts(res.data.posts)
-        }).catch(error =>{
-            console.log(error)
-        })
-    }, [])
-    
+function SuggestedPosts({postSlug}) {
+   const {posts} = useContext(PostContext)
+   const showPosts = posts.filter(post => post.post_slug !== postSlug).slice(0,5)
   return (
     <>
           <Container fluid>
@@ -32,10 +24,8 @@ function SuggestedPosts() {
                 <Col className="text-center" lg="12">
                 <CardHeader>Recommended For You</CardHeader>
                         {showPosts.length !== 0 ? (showPosts.map(post =>(
-                            <Card>
-                            
+                            <Card key={post.post_id}>
                             <CardBody>
-                            <Fragment key={post.post_id}>
                                 <img
                                     alt="..."
                                     className="rounded img-raised"
@@ -59,8 +49,7 @@ function SuggestedPosts() {
                                     >
                                     Read  More
                                     </Button>
-                                </div>  
-                            </Fragment>                      
+                                </div>                      
                             </CardBody>              
                         </Card>))):null}
                     </Col> 

@@ -17,17 +17,17 @@ import { Link } from "react-router-dom";
 
 const items = [
   {
-    src: require("assets/img/bg1.jpg"),
+    src: require("assets/img/gdi5.jpg"),
     altText: "Nature, United States",
     caption: "Nature, United States"
   },
   {
-    src: require("assets/img/bg3.jpg"),
+    src: require("assets/img/gdi7.jpg"),
     altText: "Somewhere Beyond, United States",
     caption: "Somewhere Beyond, United States"
   },
   {
-    src: require("assets/img/bg4.jpg"),
+    src: require("assets/img/gdi8.jpg"),
     altText: "Yellowstone National Park, United States",
     caption: "Yellowstone National Park, United States"
   }

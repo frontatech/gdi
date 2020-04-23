@@ -41,7 +41,7 @@ function EventPosts() {
                             <h5 className="font-weight-bold text-justify text-black title">
                             Excepteur sint occaecat cupidatat proid ent sunt culpa quiExcepteur sint occaecat cupidatat proid ent sunt culpa qui 
                             </h5>
-                            <Badge color="warning">27/10/2020</Badge>
+                            <span className="event-date">27/10/2020</span>
                             <p className="font-weight-normal text-justify description">
                             Excepteur sint occaecat cupidatat proid ent sunt culpa qui officia derunt mollit anmlab rum sed perspiciatis unde omnis is natus error sit voluptatem.
 
@@ -72,7 +72,7 @@ function EventPosts() {
                             <h5 className="font-weight-bold text-justify text-black title">
                             Excepteur sint occaecat cupidatat proid ent sunt culpa quiExcepteur sint occaecat cupidatat proid ent sunt culpa qui 
                             </h5>
-                            <p className="text-muted">27/10/2020</p>
+                            <span className="event-date">27/10/2020</span>
                             <p className="font-weight-normal text-justify description">
                             Excepteur sint occaecat cupidatat proid ent sunt culpa qui officia derunt mollit anmlab rum sed perspiciatis unde omnis is natus error sit voluptatem.
 
@@ -103,7 +103,7 @@ function EventPosts() {
                             <h5 className="font-weight-bold text-justify text-black title">
                             Excepteur sint occaecat cupidatat proid ent sunt culpa quiExcepteur sint occaecat cupidatat proid ent sunt culpa qui 
                             </h5>
-                            <p className="text-muted">27/10/2020</p>
+                            <span className="event-date">27/10/2020</span>
                             <p className="font-weight-normal text-justify description">
                             Excepteur sint occaecat cupidatat proid ent sunt culpa qui officia derunt mollit anmlab rum sed perspiciatis unde omnis is natus error sit voluptatem.
 
@@ -134,7 +134,7 @@ function EventPosts() {
                             <h5 className="font-weight-bold text-justify text-black title">
                             Excepteur sint occaecat cupidatat proid ent sunt culpa quiExcepteur sint occaecat cupidatat proid ent sunt culpa qui 
                             </h5>
-                            <p className="text-muted">27/10/2020</p>
+                            <span className="event-date">27/10/2020</span>
                             <p className="font-weight-normal text-justify description">
                             Excepteur sint occaecat cupidatat proid ent sunt culpa qui officia derunt mollit anmlab rum sed perspiciatis unde omnis is natus error sit voluptatem.
 
@@ -165,7 +165,7 @@ function EventPosts() {
                             <h5 className="font-weight-bold text-justify text-black title">
                             Excepteur sint occaecat cupidatat proid ent sunt culpa quiExcepteur sint occaecat cupidatat proid ent sunt culpa qui 
                             </h5>
-                            <p className="text-muted">27/10/2020</p>
+                            <span className="event-date">27/10/2020</span>
                             <p className="font-weight-normal text-justify description">
                             Excepteur sint occaecat cupidatat proid ent sunt culpa qui officia derunt mollit anmlab rum sed perspiciatis unde omnis is natus error sit voluptatem.
 
@@ -196,7 +196,7 @@ function EventPosts() {
                             <h5 className="font-weight-bold text-justify text-black title">
                             Excepteur sint occaecat cupidatat proid ent sunt culpa quiExcepteur sint occaecat cupidatat proid ent sunt culpa qui 
                             </h5>
-                            <p className="text-muted">27/10/2020</p>
+                            <span className="event-date">27/10/2020</span>
                             <p className="font-weight-normal text-justify description">
                             Excepteur sint occaecat cupidatat proid ent sunt culpa qui officia derunt mollit anmlab rum sed perspiciatis unde omnis is natus error sit voluptatem.
 
@@ -227,7 +227,7 @@ function EventPosts() {
                             <h5 className="font-weight-bold text-justify text-black title">
                             Excepteur sint occaecat cupidatat proid ent sunt culpa quiExcepteur sint occaecat cupidatat proid ent sunt culpa qui 
                             </h5>
-                            <p className="text-muted">27/10/2020</p>
+                            <span className="event-date">27/10/2020</span>
                             <p className="font-weight-normal text-justify description">
                             Excepteur sint occaecat cupidatat proid ent sunt culpa qui officia derunt mollit anmlab rum sed perspiciatis unde omnis is natus error sit voluptatem.
 
@@ -258,7 +258,7 @@ function EventPosts() {
                             <h5 className="font-weight-bold text-justify text-black title">
                             Excepteur sint occaecat cupidatat proid ent sunt culpa quiExcepteur sint occaecat cupidatat proid ent sunt culpa qui 
                             </h5>
-                            <p className="text-muted">27/10/2020</p>
+                            <span className="event-date">27/10/2020</span>
                             <p className="font-weight-normal text-justify description">
                             Excepteur sint occaecat cupidatat proid ent sunt culpa qui officia derunt mollit anmlab rum sed perspiciatis unde omnis is natus error sit voluptatem.
 
@@ -289,7 +289,7 @@ function EventPosts() {
                             <h5 className="font-weight-bold text-justify text-black title">
                             Excepteur sint occaecat cupidatat proid ent sunt culpa quiExcepteur sint occaecat cupidatat proid ent sunt culpa qui 
                             </h5>
-                            <p className="text-muted">27/10/2020</p>
+                            <span className="event-date">27/10/2020</span>
                             <p className="font-weight-normal text-justify description">
                             Excepteur sint occaecat cupidatat proid ent sunt culpa qui officia derunt mollit anmlab rum sed perspiciatis unde omnis is natus error sit voluptatem.
 

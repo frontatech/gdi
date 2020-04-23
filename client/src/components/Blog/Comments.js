@@ -22,7 +22,7 @@ function Comments({comments}) {
                 <Col className="text-center" lg="12">
                 <CardHeader>Commments</CardHeader>
                         {comments.length !== 0 ? (comments.map(comment =>(
-                            <Card>
+                            <Card key={comment.comment_id}>
                                 <CardHeader><h6 className="font-weight-bold text-center text-black title">
                                     {comment.name}
                                 </h6></CardHeader>

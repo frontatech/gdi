@@ -155,13 +155,12 @@ function MainNavbar() {
                 
                 <Button
                   className="nav-link btn-danger"
-                  color="info"
                   tag={Link}
                   to="/donate"
                   id="donate-now"
                 >
                   <i className="now-ui-icons arrows-1_share-66 mr-1"></i>
-                  <p>Become a Member</p>
+                  <p>Donate Now</p>
                 </Button>
               </NavItem>
               

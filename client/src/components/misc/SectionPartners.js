@@ -11,88 +11,51 @@ return (
     <MDBCard>
       <MDBCardBody>
         <MDBCardTitle tag="h5">
-          Panel title that wraps to a new line
+          Godliness With Contentment
         </MDBCardTitle>
-        <MDBCardText>
-          This is a longer panel with supporting text below as a natural
-          lead-in to additional content. This content is a little bit
-          longer.
-        </MDBCardText>
+        
       </MDBCardBody>
     </MDBCard>
     <MDBCard className="p-3">
       <blockquote className="blockquote mb-0 card-body">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-          posuere erat a ante.
-        </p>
-        <footer className="blockquote-footer">
-          <small className="text-muted">
-            Someone famous in{" "}
-            <cite title="Source Title">Source Title</cite>
-          </small>
-        </footer>
+        <h1>
+           Love, Peace, Equity & Justice
+        </h1>
+        
       </blockquote>
     </MDBCard>
     <MDBCard>
       <MDBCardBody>
-        <MDBCardTitle tag="h5">Panel title</MDBCardTitle>
-        <MDBCardText>
-          This panel has supporting text below as a natural lead-in to
-          additional content.
-        </MDBCardText>
-        <MDBCardText small muted>
-          Last updated 3 mins ago
-        </MDBCardText>
+        <MDBCardTitle tag="h5">Inclusiveness</MDBCardTitle>
       </MDBCardBody>
     </MDBCard>
 
     <MDBCard color="primary-color" text="white" className="text-center p-3">
       <blockquote className="blockquote mb-0">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-          posuere erat.
-        </p>
-        <footer className="blockquote-footer">
-          <small className="text-white">
-            Someone famous in{" "}
-            <cite title="Source Title">Source Title</cite>
-          </small>
-        </footer>
+        <h3>
+         Service and Sacrifice
+        </h3>
       </blockquote>
     </MDBCard>
 
     <MDBCard className="text-center">
       <MDBCardBody>
-        <MDBCardTitle tag="h5">Panel title</MDBCardTitle>
-        <MDBCardText>
-          This panel has supporting text below as a natural lead-in to
-          additional content.
-        </MDBCardText>
-        <MDBCardText small muted>
-          Last updated 3 mins ago
-        </MDBCardText>
+        <MDBCardTitle tag="h5">Grassroots Development</MDBCardTitle>
+        
       </MDBCardBody>
     </MDBCard>
 
     <MDBCard className="text-right p-3">
       <blockquote className="blockquote mb-0 card-body">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-          posuere erat a ante.
-        </p>
-        <footer className="blockquote-footer">
-          <small className="text-muted">
-            Someone famous in{" "}
-            <cite title="Source Title">Source Title</cite>
-          </small>
-        </footer>
+        <h3>
+          Transparency, Probity and Accountability
+        </h3>
       </blockquote>
     </MDBCard>
 
     <MDBCard>
       <MDBCardBody>
-        <MDBCardTitle tag="h5">Panel title</MDBCardTitle>
+        <MDBCardTitle tag="h5">Team Work</MDBCardTitle>
         <MDBCardText>
           This is a wider panel with supporting text below as a natural
           lead-in to additional content. This panel has even longer

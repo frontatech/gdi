@@ -33,13 +33,12 @@ function SectionHelp() {
                 <img
                   alt="..."
                   className="rounded-circle help-img"
-                  src={require("assets/img/julie.jpg")}
+                  src={require("assets/img/gdi16.jpg")}
                 ></img>
               </Col>
             <h5 className="font-weight-bold my-4">Help For Education</h5>
             <p className="grey-text mb-md-0 mb-5">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Reprehenderit maiores aperiam minima assumenda deleniti hic.
+              One of cardinl responsibilty is to build capacity.We want to achieve that ty identifying indegent children that have no qaccess to quality education mostly at the University level. You can collaborate and partner with us for us to achieve this.
             </p>
           </MDBCol>
           <MDBCol md="3">
@@ -48,12 +47,12 @@ function SectionHelp() {
                 <img
                   alt="..."
                   className="rounded-circle help-img"
-                  src={require("assets/img/julie.jpg")}
+                  src={require("assets/img/gdi3.jpg")}
                 ></img>
               </Col>
-            <h5 className="font-weight-bold my-4">Become a Voluteer</h5>            <p className="grey-text mb-md-0 mb-5">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Reprehenderit maiores aperiam minima assumenda deleniti hic.
+            <h5 className="font-weight-bold my-4">Become a Voluteer</h5>            
+            <p className="grey-text mb-md-0 mb-5">
+              Our organization require people who will help us reach out to the rural and hintherland areas. The aim is to identify their needs and from time to time help to get feedback from them. We need your partnership by way of volunteering membership.
             </p>
           </MDBCol>
           <MDBCol md="3">
@@ -62,13 +61,12 @@ function SectionHelp() {
                 <img
                   alt="..."
                   className="rounded-circle help-img"
-                  src={require("assets/img/julie.jpg")}
+                  src={require("assets/img/gdi4.jpg")}
                 ></img>
               </Col>
             <h5 className="font-weight-bold my-4">Offer Scholarship</h5>
             <p className="grey-text mb-md-0 mb-5">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Reprehenderit maiores aperiam minima assumenda deleniti hic.
+              In order to achieve our capacity building programs through education, please kindly help us meet our yearly target of 200 scholarship programs in Nigeria and Africa at large. We also need your scholarship to fund our apprentiship programs.
             </p>
           </MDBCol>
           <MDBCol md="3">
@@ -77,13 +75,12 @@ function SectionHelp() {
                 <img
                   alt="..."
                   className="rounded-circle help-img"
-                  src={require("assets/img/julie.jpg")}
+                  src={require("assets/img/gdi10.jpg")}
                 ></img>
               </Col>
             <h5 className="font-weight-bold my-4">Give a donation</h5>
             <p className="grey-text mb-md-0 mb-5">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Reprehenderit maiores aperiam minima assumenda deleniti hic.
+              Please donate to enable us carry out our core business activities and meet up with with our ain  and objectives.
             </p>
           </MDBCol>
         </MDBRow>
