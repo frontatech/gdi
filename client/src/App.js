@@ -10,8 +10,8 @@ import "./assets/demo/demo.css";
 import "./assets/demo/nucleo-icons-page-styles.css";
 import "./assets/css/app.css";
 
-import WrapperRouter from "components/WrapperRouter";
-import { PostProvider } from "context/PostContext";
+import WrapperRouter from "./components/WrapperRouter";
+import { PostProvider } from "./context/PostContext";
 
 const App = () => {
     return (
