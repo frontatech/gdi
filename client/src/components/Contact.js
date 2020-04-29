@@ -33,18 +33,18 @@ const Contact = () => {
     };
   });
   return (
-    <>
+
       
       <div className="wrapper">
         <LandingPageHeader2 />
         <Container>
-<ContactUs/>
-<GMap/>
+        <ContactUs/>
+        <GMap/>
 
            </Container>
         <DefaultFooter />
       </div>
-    </>
+  
   );
 }
 

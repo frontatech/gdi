@@ -18,11 +18,12 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
 // core components
-import ExamplesNavbar from "./Navbars/ExamplesNavbar.js";
 import LandingPageHeader from "./Headers/LandingPageHeader.js";
 import DefaultFooter from "./Footers/DefaultFooter.js";
+import ScrollTop from "./misc/ScrollTop.js";
 
-function About() {
+function About({location}) {
+  ScrollTop(location)
   const [firstFocus, setFirstFocus] = React.useState(false);
   const [lastFocus, setLastFocus] = React.useState(false);
   React.useEffect(() => {
@@ -35,20 +36,19 @@ function About() {
     };
   });
   return (
-    <>
-      
+   
       <div className="wrapper">
         <LandingPageHeader />
-<AboutSectionOne/>
- <AboutSectionTwo/>  
- <AboutSectionThree/> 
+        <AboutSectionOne/>
+        <AboutSectionTwo/>  
+        <AboutSectionThree/> 
 
 
             
 
         <DefaultFooter />
       </div>
-    </>
+    
   );
 }
 

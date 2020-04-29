@@ -35,18 +35,18 @@ function Services() {
     };
   });
   return (
-    <>
+ 
       
       <div className="wrapper">
         <LandingPageHeader2 />
         <Container>
-<ServiceSectionOne/>
-<ContactUs/>
+        <ServiceSectionOne/>
+        <ContactUs/>
 
-           </Container>
+        </Container>
         <DefaultFooter />
       </div>
-    </>
+
   );
 }
 

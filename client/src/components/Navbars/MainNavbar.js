@@ -4,21 +4,18 @@ import { Link } from "react-router-dom";
 import {
   Button,
   Collapse,
-  NavbarBrand,
   Navbar,
   NavItem,
   Nav,
   Container,
-  UncontrolledTooltip,
-  Row,
-  Col
-} from "reactstrap";
+  } from "reactstrap";
 import './header.css'
 function MainNavbar() {
   const [navbarColor, setNavbarColor] = React.useState('navbarTry');
   const [collapseOpen, setCollapseOpen] = React.useState(false);
   React.useEffect(() => {
     // document.body.scrollTop = 0
+    // window.scrollTo(0,0)
     const updateNavbarColor = () => {
       if (
         document.documentElement.scrollTop > 399 ||
@@ -62,7 +59,7 @@ function MainNavbar() {
           </Row>
         </Container>
       </Navbar> */}
-      <Navbar style={{marginBottom: 0}}  className={'fixed-top '+navbarColor} expand="lg" color="info">
+      <Navbar style={{marginBottom: 0}}  className={'fixed-top '+navbarColor} expand="lg" color="green">
         <Container>
           <div className="navbar-translate">
            
@@ -138,11 +135,11 @@ function MainNavbar() {
               </NavItem>
               <NavItem>
                 <Link
-                  to="/management"
+                  to="/events"
                   className="nav-link"
                 >
                   <i className="now-ui-icons arrows-1_cloud-download-93"></i>
-                  <p>Management</p>
+                  <p>Events</p>
                 </Link>
               </NavItem>
               <NavItem>
@@ -158,17 +155,13 @@ function MainNavbar() {
                 
                 <Button
                   className="nav-link btn-danger"
-                  color="info"
-                  href="/"
-                  id="upgrade-to-pro"
-                  onClick={e => e.preventDefault()}
+                  tag={Link}
+                  to="/donate"
+                  id="donate-now"
                 >
                   <i className="now-ui-icons arrows-1_share-66 mr-1"></i>
-                  <p>Become a Member</p>
+                  <p>Donate Now</p>
                 </Button>
-                <UncontrolledTooltip target="#upgrade-to-pro">
-                  Cooming soon!
-                </UncontrolledTooltip>
               </NavItem>
               
             </Nav>

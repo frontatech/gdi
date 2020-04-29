@@ -11,22 +11,23 @@ import {
   CarouselIndicators,
   Button
 } from "reactstrap";
+import { Link } from "react-router-dom";
 
 // core components
 
 const items = [
   {
-    src: require("assets/img/bg1.jpg"),
+    src: require("assets/img/gdi5.jpg"),
     altText: "Nature, United States",
     caption: "Nature, United States"
   },
   {
-    src: require("assets/img/bg3.jpg"),
+    src: require("assets/img/gdi7.jpg"),
     altText: "Somewhere Beyond, United States",
     caption: "Somewhere Beyond, United States"
   },
   {
-    src: require("assets/img/bg4.jpg"),
+    src: require("assets/img/gdi8.jpg"),
     altText: "Yellowstone National Park, United States",
     caption: "Yellowstone National Park, United States"
   }
@@ -57,11 +58,11 @@ function HomeCarousel() {
   };
   return (
     <>
-      <div  className="" id="carousel">
+      <div  className="" id="carousel" style={{maxWidth: '100%',width:'100%'}}>
           <Row className="justify-content-center carousel-section">
             <Col lg="12" md="12">
               <Carousel
-              style={{maxHeight:'100vh',height: '100vh'}}
+              
                 activeIndex={activeIndex}
                 next={next}
                 previous={previous}
@@ -74,12 +75,13 @@ function HomeCarousel() {
                 {items.map(item => {
                   return (
                     <CarouselItem
+                      style={{width:"100%"}}
                       onExiting={onExiting}
                       onExited={onExited}
                       key={item.src}
-                      slide={false}
+                      slide={true}
                     >
-                      <img style={{height: '100vh',width: '100vw'}} src={item.src} alt={item.altText} />
+                      <img style={{height: '100vh',width: '100%'}} src={item.src} alt={item.altText} />
                       <div className="carousel-caption">
                         <h1 className="text-white title"><strong>Grassroots <span className="text-yellow">Development</span> Initiative</strong></h1>
 
@@ -87,8 +89,8 @@ function HomeCarousel() {
                         <Button
                           className="btn-round"
                           color="info"
-                          href="/"
-                          
+                          to="/about-us"
+                          tag={Link}
                           size="lg"
                           
                         >
