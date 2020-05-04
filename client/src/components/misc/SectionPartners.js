@@ -8,62 +8,54 @@ return (
           Our Core Values
         </h2>
   <MDBCardGroup column>
-    <MDBCard>
+    <MDBCard id="card1">
       <MDBCardBody>
-        <MDBCardTitle tag="h5">
+        <MDBCardTitle className="text-white" tag="h1">
           Godliness With Contentment
         </MDBCardTitle>
         
       </MDBCardBody>
     </MDBCard>
-    <MDBCard className="p-3">
+    <MDBCard className="p-3" id="card2">
       <blockquote className="blockquote mb-0 card-body">
-        <h1>
+        <h1 className="text-white">
            Love, Peace, Equity & Justice
         </h1>
         
       </blockquote>
     </MDBCard>
-    <MDBCard>
+    <MDBCard id="card3">
       <MDBCardBody>
-        <MDBCardTitle tag="h5">Inclusiveness</MDBCardTitle>
+        <MDBCardTitle className="text-white" tag="h2">Inclusiveness</MDBCardTitle>
       </MDBCardBody>
     </MDBCard>
 
-    <MDBCard color="primary-color" text="white" className="text-center p-3">
+    <MDBCard color="primary-color" text="white" id="card4" className="text-center p-3">
       <blockquote className="blockquote mb-0">
-        <h3>
+        <h3 className="text-white">
          Service and Sacrifice
         </h3>
       </blockquote>
     </MDBCard>
 
-    <MDBCard className="text-center">
+    <MDBCard className="text-center" id="card5">
       <MDBCardBody>
-        <MDBCardTitle tag="h5">Grassroots Development</MDBCardTitle>
+        <MDBCardTitle className="text-white" tag="h3">Grassroots Development</MDBCardTitle>
         
       </MDBCardBody>
     </MDBCard>
 
-    <MDBCard className="text-right p-3">
+    <MDBCard className="text-right p-3" id="card6">
       <blockquote className="blockquote mb-0 card-body">
-        <h3>
+        <h3 className="text-white">
           Transparency, Probity and Accountability
         </h3>
       </blockquote>
     </MDBCard>
 
-    <MDBCard>
+    <MDBCard id="card7">
       <MDBCardBody>
-        <MDBCardTitle tag="h5">Team Work</MDBCardTitle>
-        <MDBCardText>
-          This is a wider panel with supporting text below as a natural
-          lead-in to additional content. This panel has even longer
-          content than the first to show that equal height action.
-        </MDBCardText>
-        <MDBCardText small muted>
-          Last updated 3 mins ago
-        </MDBCardText>
+        <MDBCardTitle className="text-white" tag="h1">Team Work</MDBCardTitle>
       </MDBCardBody>
     </MDBCard>
   </MDBCardGroup>

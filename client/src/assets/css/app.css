@@ -116,4 +116,29 @@
     padding: 17px 0px;
     border: 5px double #ecd;
 }
+
+#card1{
+    background-size: 200px 200px;
+    background-repeat: no-repeat;
+    background: repeating-linear-gradient(180deg,  #c5e4d8,#c8f7ef 30%,#d5f3e3 40%,#d2f3e9);
+    background-blend-mode: normal;
+}
+#card2{
+    background: repeating-linear-gradient(90deg, #b6cec9,#93feea,#98c7ae,#7baaa8);
+}
+#card3{
+    background: repeating-linear-gradient(360deg, #9eb8af,#93feea,#8fb19f,#93feea);;
+}
+#card4{
+    background: repeating-linear-gradient(120deg, #85a6aa,#93feea,#ebf8f1,#93feea);
+}
+#card5{
+    background: repeating-linear-gradient(270deg, #76bb92,#93feea,#67a784,#93feea);
+}
+#card6{
+    background: repeating-linear-gradient(-190deg, #81b6a6,#93feea,#8bc5a6,#93feea);
+}
+#card7{
+    background: repeating-linear-gradient(150deg, #91b5be,#93feea,#afe5c8,#93feea);
+}
   
