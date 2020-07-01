@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, {useState, useContext} from "react";
 
 // reactstrap components
 import {
@@ -30,50 +30,61 @@ import {
   InputGroupText,
   InputGroup,
   Row,
-  Col
+  Col,
+  Alert
 } from "reactstrap";
+import { Redirect } from "react-router-dom";
+import { LoginUser } from "../../functions/UserFunctions";
+import { UserAuthContext } from "../../context/UserAuthContext";
 
-class Login extends React.Component {
-  render() {
+const Login = ({history,location}) =>{
+  const {user:{isAuthenticated},dispatch} = useContext(UserAuthContext)
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [errors, setErrors] = useState({userError:'',pwdError:'',message:''})
+  const updateName = (e) =>{
+    setUsername(e.target.value)
+    setErrors(previous => ({...previous,userError:'',message:''}))
+  }
+  const updatePassword = (e) =>{
+    setPassword(e.target.value)
+    setErrors(previous => ({...previous,pwdError:'',message:''}))
+  }
+  const handleSubmit = async () =>{
+    let pass = true
+    if(username.length === 0){
+      pass = false
+      setErrors(previous => ({...previous,userError:'Please enter your username'}))
+    }
+    if(password.length === 0){
+      pass = false
+      setErrors(previous => ({...previous,pwdError:'Please enter your paasword'}))
+    }
+    if(pass){
+      try {
+        const user = {username,password}
+        let res = await LoginUser(user)
+        if(!res.data.access){
+          return setErrors(previous => ({...previous,message:res.data.message}))
+        }
+        // getUser(res.data.token)
+        dispatch({type:"LOGIN_USER",user:{...res.data.user}})
+        // localStorage.setItem('user-auth-token',res.data.token)
+        return history.push('/admin')
+      } catch (error) {
+        setErrors(previous => ({...previous,message:'Sorry, an error occurred, Try again later'}))
+        console.log(error)
+      }
+    }
+  }
+  const {from} = location.state || {from: {pathname: '/admin'}}
+  if(isAuthenticated){
+    return <Redirect to={from} />
+  }
     return (
       <>
         <Col lg="5" md="7">
           <Card className="bg-secondary shadow border-0">
-            <CardHeader className="bg-transparent pb-5">
-              <div className="text-muted text-center mt-2 mb-3">
-                <small>Sign in with</small>
-              </div>
-              <div className="btn-wrapper text-center">
-                <Button
-                  className="btn-neutral btn-icon"
-                  color="default"
-                  href="#pablo"
-                  onClick={e => e.preventDefault()}
-                >
-                  <span className="btn-inner--icon">
-                    <img
-                      alt="..."
-                      src={require("../../assets/img/icons/common/github.svg")}
-                    />
-                  </span>
-                  <span className="btn-inner--text">Github</span>
-                </Button>
-                <Button
-                  className="btn-neutral btn-icon"
-                  color="default"
-                  href="#pablo"
-                  onClick={e => e.preventDefault()}
-                >
-                  <span className="btn-inner--icon">
-                    <img
-                      alt="..."
-                      src={require("../../assets/img/icons/common/google.svg")}
-                    />
-                  </span>
-                  <span className="btn-inner--text">Google</span>
-                </Button>
-              </div>
-            </CardHeader>
             <CardBody className="px-lg-5 py-lg-5">
               <div className="text-center text-muted mb-4">
                 <small>Or sign in with credentials</small>
@@ -86,9 +97,10 @@ class Login extends React.Component {
                         <i className="ni ni-email-83" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Email" type="email" autoComplete="new-email"/>
+                    <Input value={username} onChange={updateName} placeholder="Email" type="email" autoComplete="new-email"/>
                   </InputGroup>
                 </FormGroup>
+                <span>{errors.userError}</span>
                 <FormGroup>
                   <InputGroup className="input-group-alternative">
                     <InputGroupAddon addonType="prepend">
@@ -96,14 +108,16 @@ class Login extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Password" type="password" autoComplete="new-password"/>
+                    <Input value={password} onChange={updatePassword} placeholder="Password" type="password" autoComplete="new-password"/>
                   </InputGroup>
                 </FormGroup>
+                <span>{errors.pwdError}</span>
                 <div className="custom-control custom-control-alternative custom-checkbox">
                   <input
                     className="custom-control-input"
                     id=" customCheckLogin"
                     type="checkbox"
+
                   />
                   <label
                     className="custom-control-label"
@@ -112,8 +126,9 @@ class Login extends React.Component {
                     <span className="text-muted">Remember me</span>
                   </label>
                 </div>
+                {errors.message.length !== 0 ? <Alert color="warning">{errors.message}</Alert> : null}
                 <div className="text-center">
-                  <Button className="my-4" color="primary" type="button">
+                  <Button onClick={handleSubmit} className="my-4" color="primary" type="button">
                     Sign in
                   </Button>
                 </div>
@@ -130,20 +145,10 @@ class Login extends React.Component {
                 <small>Forgot password?</small>
               </a>
             </Col>
-            <Col className="text-right" xs="6">
-              <a
-                className="text-light"
-                href="#pablo"
-                onClick={e => e.preventDefault()}
-              >
-                <small>Create new account</small>
-              </a>
-            </Col>
           </Row>
         </Col>
       </>
     );
-  }
 }
 
 export default Login;

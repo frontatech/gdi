@@ -23,6 +23,7 @@ const handleImageFileUpload = (DIR,FILENAME, SIZE) =>{
                return cb(null, true)
             }
             else{
+                console.log(file)
                 cb(null, false)
                 return cb({error: "Only .png, .jpg or .jpeg format is allowed"})
             }

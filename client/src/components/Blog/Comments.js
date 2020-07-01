@@ -1,6 +1,6 @@
 import React, {useState, useEffect, Fragment} from "react";
 import { Link,} from "react-router-dom";
-import axios from 'axios'
+import moment from 'moment'
 // reactstrap components
 import {
   Button,
@@ -30,7 +30,8 @@ function Comments({comments}) {
                                 <p className="font-weight-normal text-justify description">
                                     {comment.comment}    
                                 </p> 
-                                <p className="text-muted">{comment.date}</p>                     
+                                <p className="text-yellow">{moment(comment.date).format("MMM Do YYYY")}</p>
+                         
                             </CardBody>              
                         </Card>))):null}
                     </Col> 

@@ -18,18 +18,30 @@ import { Link } from "react-router-dom";
 const items = [
   {
     src: require("assets/img/gdi5.jpg"),
-    altText: "Nature, United States",
-    caption: "Nature, United States"
+    altText: "Grassroots development Initiative",
+    caption: "Grassroots Development Initiative",
+    subtitle: "Good Governance and capacity building",
+    toUrl:"/about-us",
+    color:"success",
+    title: "Learn More About Us"
   },
   {
     src: require("assets/img/gdi7.jpg"),
-    altText: "Somewhere Beyond, United States",
-    caption: "Somewhere Beyond, United States"
+    altText: "To Feed and Educate People",
+    caption: "To Feed and Educate People",
+    subtitle: "We need your support",
+    toUrl:"/donate",
+    color:"danger",
+    title: "Donate Now"
   },
   {
-    src: require("assets/img/gdi8.jpg"),
-    altText: "Yellowstone National Park, United States",
-    caption: "Yellowstone National Park, United States"
+    src: require("assets/img/bg12.jpg"),
+    altText: "Become a volunteer or a partner",
+    caption: "Become a volunteer or a partner",
+    subtitle: "Join Hands together with us to make the world a better place",
+    toUrl:"/partner-with-us",
+    color:"danger",
+    title: "Become a partner"
   }
 ];
 
@@ -58,8 +70,9 @@ function HomeCarousel() {
   };
   return (
     <>
-      <div  className="" id="carousel" style={{maxWidth: '100%',width:'100%'}}>
-          <Row className="justify-content-center carousel-section">
+      <div className="" id="carousel" style={{maxWidth: '100%',width:'100%'}}>
+        
+          <Row className="justify-content-center carousel-section" >
             <Col lg="12" md="12">
               <Carousel
               
@@ -72,7 +85,7 @@ function HomeCarousel() {
                   activeIndex={activeIndex} 
                   onClickHandler={goToIndex}
                 />
-                {items.map(item => {
+                {items.map((item,i) => {
                   return (
                     <CarouselItem
                       style={{width:"100%"}}
@@ -80,21 +93,21 @@ function HomeCarousel() {
                       onExited={onExited}
                       key={item.src}
                       slide={true}
-                    >
+                    ><div class="overlay"></div>
                       <img style={{height: '100vh',width: '100%'}} src={item.src} alt={item.altText} />
                       <div className="carousel-caption">
-                        <h1 className="text-white title"><strong>Grassroots <span className="text-yellow">Development</span> Initiative</strong></h1>
+                        <h1 className="text-white title">{i === 0 ? <strong>Grassroots <span className="text-yellow">Development</span> Initiative</strong> : item.caption}</h1>
 
-                        <h5 className="subtitle"><span className="text-red spanFor">For</span> <em><Wave text="Good Governance & Capacity Building!" /></em> </ h5>
+                        <h5 className="subtitle">{i === 0 ? <span className="text-red spanFor">For</span> : null} <em><Wave text={item.subtitle} /></em> </ h5>
                         <Button
                           className="btn-round"
-                          color="info"
-                          to="/about-us"
+                          color={item.color}
+                          to={item.toUrl}
                           tag={Link}
-                          size="lg"
+                          size="sm"
                           
                         >
-                          Learn More About Us
+                          {item.title}
                         </Button>
                     </div>
                     </CarouselItem>

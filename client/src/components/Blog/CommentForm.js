@@ -1,6 +1,7 @@
 import React,{useState} from 'react'
 import {Container, Row, Col, InputGroup, Input, Button, InputGroupAddon, InputGroupText} from 'reactstrap'
 import axios from 'axios'
+import { validateEmail } from 'components/misc/helper';
 const CommentForm = ({postId,updateCommment}) => {
     const [firstFocus, setFirstFocus] = useState(false);
     const [lastFocus, setLastFocus] = useState(false);
@@ -35,9 +36,13 @@ const CommentForm = ({postId,updateCommment}) => {
     }
     const handleSubmit = (e) =>{
         if(username === "") setNameError("Enter Your Name")
-        if(userEmail === "") setEmailError("Enter Your Email Address")
         if(message === "") setMsgError("Enter Your Comment")
-        if(username !== "" && userEmail !== "" && message !== ""){
+        if(userEmail === "") setEmailError("Enter Your Email Address")
+        if(!validateEmail(userEmail)) {
+          setEmailError("Enter A Valid Email Address")
+          return
+        }
+        if(username.trim() !== "" && userEmail.trim() !== "" && message.trim() !== ""){
             setLoader(true)
             resetFormInputErrors({emailError:'',nameError: '',msgError: ''})
             axios.post('/postComment',{name:username,email:userEmail,message,postId}).then(res =>{
@@ -62,19 +67,19 @@ const CommentForm = ({postId,updateCommment}) => {
             <h2 className="title">Comment Below</h2>
             <p className="description">We promise to never publicize your email address.</p>
             <Row>
-              <Col className="text-center ml-auto mr-auto" lg="6" md="8">
+              <Col className="text-center ml-auto mr-auto" lg="6" md="8" sm="12">
                 <InputGroup
                   className={
                     "input-lg" + (firstFocus ? " input-group-focus" : "")
                   }
                 >
                   <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
+                    <InputGroupText style={{padding:'none'}}>
                       <i className="now-ui-icons users_circle-08"></i>
                     </InputGroupText>
                   </InputGroupAddon>
                   <Input
-                    placeholder="First Name..."
+                    placeholder="Username..."
                     type="text"
                     onChange={updateName}
                     value={username}
@@ -108,9 +113,9 @@ const CommentForm = ({postId,updateCommment}) => {
                     type="textarea"
                     onChange={updateMsg}
                     value={message}
-                    style={{borderRadius: '30px',textAlign: 'center'}}
+                    className="form-control"
                 ></textarea>
-                </div>
+                </div><br/>
                 <span className="text-red">{msgError}</span>
                 <div className="send-button">
                   <Button
@@ -118,7 +123,7 @@ const CommentForm = ({postId,updateCommment}) => {
                     className="btn-round"
                     color="success"
                     onClick={handleSubmit}
-                    size="lg"
+                    size="sm"
                   >
                     Send Message
                   </Button>

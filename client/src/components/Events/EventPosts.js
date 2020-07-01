@@ -14,19 +14,14 @@ import {
 import LandingPageHeader from "../Headers/LandingPageHeader.js";
 function EventPosts() {
   React.useEffect(() => {
-    document.body.classList.add("landing-page");
     document.body.classList.add("sidebar-collapse");
     document.documentElement.classList.remove("nav-open");
     return function cleanup() {
-      document.body.classList.remove("landing-page");
       document.body.classList.remove("sidebar-collapse");
     };
   });
   return (
     <>
-      
-      <div className="wrapper">
-        <LandingPageHeader />
         <div className="section section-about-us blog">
           <Container fluid>
             <Row>
@@ -324,7 +319,6 @@ function EventPosts() {
             </div>        
           </Container>
         </div>
-      </div>
     </>
   );
 }

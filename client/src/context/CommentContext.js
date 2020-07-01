@@ -12,14 +12,14 @@ export const CommentProvider = props => {
   const getComments = (path) =>{
     axios.get(path).then(res =>{
         console.log(res)
-        if(res.data.length === 0 || res.data.error)
+        if(res.data.length === 0 || res.data.error) return
         setTotalComments(res.data.totalComments)
         setComments(res.data.comments)
         const remainComments = res.data.totalComments-res.data.comments.length
         setBtnText(() => remainComments === 1 ? `Load ${remainComments} More Comment`: `Load ${remainComments} More Comments`)
       }).catch(error =>{
         console.log(error)
-      })
+    })
   }
   const updateCommment = (comment) =>setComments((comments) => [...comment, ...comments])
   const loadMoreComments = (e) =>{
@@ -28,7 +28,7 @@ export const CommentProvider = props => {
     const lastId = comments.slice(-1)[0].comment_id
     const postId = comments.slice(-1)[0].post_id
     axios.post('/loadMoreComments',{lastId,postId}).then(res =>{
-        const remainComments = totalComments-(comments.length+res.data.length)
+        const remainComments = totalComments - (comments.length+res.data.length)
         if(remainComments === 0){
           setLoadBtn(false)
           setBtnText('No More Comments')

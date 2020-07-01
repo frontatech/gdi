@@ -38,7 +38,7 @@ function SectionHelp() {
               </Col>
             <h5 className="font-weight-bold my-4">Help For Education</h5>
             <p className="grey-text mb-md-0 mb-5">
-              One of cardinl responsibilty is to build capacity.We want to achieve that ty identifying indegent children that have no qaccess to quality education mostly at the University level. You can collaborate and partner with us for us to achieve this.
+              One of cardinal our responsibilty is to build capacity.We want to achieve that ty identifying indegent children that have no qaccess to quality education mostly at the University level. You can collaborate and partner with us for us to achieve this.
             </p>
           </MDBCol>
           <MDBCol md="3">

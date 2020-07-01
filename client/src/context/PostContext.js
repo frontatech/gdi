@@ -1,8 +1,6 @@
 import React,{createContext,useState,useEffect} from 'react'
 import axios from 'axios'
-
 export const PostContext = createContext()
-
 export const PostProvider = props =>{
     const [showPost, setPost] = useState([])
     const [posts, setPosts] = useState([])
@@ -15,6 +13,8 @@ export const PostProvider = props =>{
             setPosts(res.data.posts)
             setTotalPosts(res.data.total)
         }).catch(error =>{
+            setPosts([])
+            setTotalPosts(0)
             console.log(error)
         })
     }, [])
@@ -24,11 +24,12 @@ export const PostProvider = props =>{
         const lastId = posts.slice(-1)[0].post_id
         axios.post('/loadMorePosts',{lastId}).then(res =>{
             setBtnText('Load More Posts')
-            if(res.data.length < 12) {
+            console.log(res)
+            if(res.data.posts.length < 12) {
                 setBtnText('No More Posts')
                 setLoadBtn(false)
             }
-            setPosts(posts => [...posts,...res.data])
+            setPosts(posts => [...posts,...res.data.posts])
         }).catch(error =>{
             console.log(error)
         })

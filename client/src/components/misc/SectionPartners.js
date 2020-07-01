@@ -1,5 +1,5 @@
 import React from 'react';
-import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardGroup, MDBContainer } from "mdbreact";
+import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardGroup, MDBContainer, MDBCardHeader } from "mdbreact";
 
 const HomeSection2 = () => {
 return (
@@ -8,54 +8,62 @@ return (
           Our Core Values
         </h2>
   <MDBCardGroup column>
-    <MDBCard id="card1">
+    <MDBCard id="card7"> 
+      <MDBCardHeader id="card1"><img className="mx-auto d-block " src={require("../../assets/img/icons/icon.svg")} alt="icon" /></MDBCardHeader>
       <MDBCardBody>
-        <MDBCardTitle className="text-white" tag="h1">
+        
+        <MDBCardTitle tag="h3">
           Godliness With Contentment
         </MDBCardTitle>
         
       </MDBCardBody>
     </MDBCard>
-    <MDBCard className="p-3" id="card2">
+    <MDBCard id="card7">
+    <MDBCardHeader id="card1"><img className="mx-auto d-block " src={require("../../assets/img/icons/icon1.svg")} alt="icon" /></MDBCardHeader>
       <blockquote className="blockquote mb-0 card-body">
-        <h1 className="text-white">
+        <h3>
            Love, Peace, Equity & Justice
-        </h1>
+        </h3>
         
       </blockquote>
     </MDBCard>
-    <MDBCard id="card3">
+    <MDBCard id="card7">
+      <MDBCardHeader id="card1"><img className="mx-auto d-block " src={require("../../assets/img/icons/icon2.svg")} alt="icon" /></MDBCardHeader>
       <MDBCardBody>
-        <MDBCardTitle className="text-white" tag="h2">Inclusiveness</MDBCardTitle>
+        <MDBCardTitle tag="h3">Inclusiveness</MDBCardTitle>
       </MDBCardBody>
     </MDBCard>
 
-    <MDBCard color="primary-color" text="white" id="card4" className="text-center p-3">
+    <MDBCard id="card7" className="text-center">
+    <MDBCardHeader id="card1"><img className="mx-auto d-block " src={require("../../assets/img/icons/icon3.svg")} alt="icon" /></MDBCardHeader>
       <blockquote className="blockquote mb-0">
-        <h3 className="text-white">
+        <h3>
          Service and Sacrifice
         </h3>
       </blockquote>
     </MDBCard>
 
-    <MDBCard className="text-center" id="card5">
+    <MDBCard id="card7" className="text-center">
+    <MDBCardHeader id="card1"><img className="mx-auto d-block " src={require("../../assets/img/icons/icon4.svg")} alt="icon" /></MDBCardHeader>
       <MDBCardBody>
-        <MDBCardTitle className="text-white" tag="h3">Grassroots Development</MDBCardTitle>
+        <MDBCardTitle tag="h3">Grassroots Development</MDBCardTitle>
         
       </MDBCardBody>
     </MDBCard>
 
     <MDBCard className="text-right p-3" id="card6">
+    <MDBCardHeader id="card1"><img className="mx-auto d-block " src={require("../../assets/img/icons/icon5.svg")} alt="icon" /></MDBCardHeader>
       <blockquote className="blockquote mb-0 card-body">
-        <h3 className="text-white">
+        <h3>
           Transparency, Probity and Accountability
         </h3>
       </blockquote>
     </MDBCard>
 
     <MDBCard id="card7">
+    <MDBCardHeader id="card1"><img className="mx-auto d-block " src={require("../../assets/img/icons/icon6.svg")} alt="icon" /></MDBCardHeader>
       <MDBCardBody>
-        <MDBCardTitle className="text-white" tag="h1">Team Work</MDBCardTitle>
+        <MDBCardTitle tag="h3">Team Work</MDBCardTitle>
       </MDBCardBody>
     </MDBCard>
   </MDBCardGroup>

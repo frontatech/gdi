@@ -19,6 +19,7 @@ import React from "react";
 
 // reactstrap components
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
+import { Link } from "react-router-dom";
 
 class Header extends React.Component {
   render() {
@@ -38,7 +39,7 @@ class Header extends React.Component {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            Traffic
+                            <Link to="/admin/posts">Posts</Link>
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
                             350,897
@@ -46,7 +47,7 @@ class Header extends React.Component {
                         </div>
                         <Col className="col-auto">
                           <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
-                            <i className="fas fa-chart-bar" />
+                            <i className="fas fa-edit" />
                           </div>
                         </Col>
                       </Row>
@@ -68,7 +69,7 @@ class Header extends React.Component {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            New users
+                            Donations
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
                             2,356
@@ -76,7 +77,7 @@ class Header extends React.Component {
                         </div>
                         <Col className="col-auto">
                           <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
-                            <i className="fas fa-chart-pie" />
+                            <i className="fas fa-donate" />
                           </div>
                         </Col>
                       </Row>
@@ -98,7 +99,7 @@ class Header extends React.Component {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            Sales
+                            <Link to="/admin/members">GDI Members</Link>
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">924</span>
                         </div>
@@ -126,7 +127,7 @@ class Header extends React.Component {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            Performance
+                            Contact Messages
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
                             49,65%
@@ -134,7 +135,7 @@ class Header extends React.Component {
                         </div>
                         <Col className="col-auto">
                           <div className="icon icon-shape bg-info text-white rounded-circle shadow">
-                            <i className="fas fa-percent" />
+                            <i className="fas fa-envelope" />
                           </div>
                         </Col>
                       </Row>
@@ -148,7 +149,130 @@ class Header extends React.Component {
                   </Card>
                 </Col>
               </Row>
+              <Row className="mt-2">
+                <Col lg="6" xl="3">
+                  <Card className="card-stats mb-4 mb-xl-0">
+                    <CardBody>
+                      <Row>
+                        <div className="col">
+                          <CardTitle
+                            tag="h5"
+                            className="text-uppercase text-muted mb-0"
+                          >
+                            Events
+                          </CardTitle>
+                          <span className="h2 font-weight-bold mb-0">
+                            350,897
+                          </span>
+                        </div>
+                        <Col className="col-auto">
+                          <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
+                            <i className="fas fa-address-card" />
+                          </div>
+                        </Col>
+                      </Row>
+                      <p className="mt-3 mb-0 text-muted text-sm">
+                        <span className="text-success mr-2">
+                          <i className="fa fa-arrow-up" /> 3.48%
+                        </span>{" "}
+                        <span className="text-nowrap">Since last month</span>
+                      </p>
+                    </CardBody>
+                  </Card>
+                </Col>
+                <Col lg="6" xl="3">
+                  <Card className="card-stats mb-4 mb-xl-0">
+                    <CardBody>
+                      <Row>
+                        <div className="col">
+                          <CardTitle
+                            tag="h5"
+                            className="text-uppercase text-muted mb-0"
+                          >
+                            Gallery
+                          </CardTitle>
+                          <span className="h2 font-weight-bold mb-0">
+                            350,897
+                          </span>
+                        </div>
+                        <Col className="col-auto">
+                          <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
+                            <i className="fas fa-images" />
+                          </div>
+                        </Col>
+                      </Row>
+                      <p className="mt-3 mb-0 text-muted text-sm">
+                        <span className="text-success mr-2">
+                          <i className="fa fa-arrow-up" /> 3.48%
+                        </span>{" "}
+                        <span className="text-nowrap">Since last month</span>
+                      </p>
+                    </CardBody>
+                  </Card>
+                </Col>
+                <Col lg="6" xl="3">
+                  <Card className="card-stats mb-4 mb-xl-0">
+                    <CardBody>
+                      <Row>
+                        <div className="col">
+                          <CardTitle
+                            tag="h5"
+                            className="text-uppercase text-muted mb-0"
+                          >
+                            Newsletter Subscribers
+                          </CardTitle>
+                          <span className="h2 font-weight-bold mb-0">
+                            350,897
+                          </span>
+                        </div>
+                        <Col className="col-auto">
+                          <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
+                            <i className="fas fa-users" />
+                          </div>
+                        </Col>
+                      </Row>
+                      <p className="mt-3 mb-0 text-muted text-sm">
+                        <span className="text-success mr-2">
+                          <i className="fa fa-arrow-up" /> 3.48%
+                        </span>{" "}
+                        <span className="text-nowrap">Since last month</span>
+                      </p>
+                    </CardBody>
+                  </Card>
+                </Col>
+                <Col lg="6" xl="3">
+                  <Card className="card-stats mb-4 mb-xl-0">
+                    <CardBody>
+                      <Row>
+                        <div className="col">
+                          <CardTitle
+                            tag="h5"
+                            className="text-uppercase text-muted mb-0"
+                          >
+                            Partnership Requests
+                          </CardTitle>
+                          <span className="h2 font-weight-bold mb-0">
+                            350,897
+                          </span>
+                        </div>
+                        <Col className="col-auto">
+                          <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
+                            <i className="fas fa-hands-helping" />
+                          </div>
+                        </Col>
+                      </Row>
+                      <p className="mt-3 mb-0 text-muted text-sm">
+                        <span className="text-success mr-2">
+                          <i className="fa fa-arrow-up" /> 3.48%
+                        </span>{" "}
+                        <span className="text-nowrap">Since last month</span>
+                      </p>
+                    </CardBody>
+                  </Card>
+                </Col>
+                </Row>
             </div>
+              
           </Container>
         </div>
       </>

@@ -3,9 +3,7 @@ import React from "react";
 // reactstrap components
 import { Button, Container } from "reactstrap";
 
-// core components
-
-function LandingPageHeader() {
+function LandingPageHeader({title,background,subtitle}) {
   let pageHeader = React.createRef();
 
   React.useEffect(() => {
@@ -27,13 +25,14 @@ function LandingPageHeader() {
         <div
           className="page-header-image"
           style={{
-            backgroundImage: "url(" + require("assets/img/bg6.jpg") + ")"
+            backgroundImage: "url(" + background + ")"
           }}
           ref={pageHeader}
         ></div>
         <div className="content-center">
           <Container>
-            <h1 className="title text-white">About GDI.</h1>
+        <h1 className="title text-white">{title}</h1>
+          <p>{subtitle}</p>
             <div className="text-center">
               <Button
                 className="btn-icon btn-round"

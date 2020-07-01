@@ -25,6 +25,12 @@ import AdminFooter from "../Footers/AdminFooter.js";
 import Sidebar from "../Sidebar/Sidebar.js";
 
 import routes from "../routes.js";
+import Members from "admin/views/pages/Members.js";
+import UserProfile from "admin/views/pages/UserProfile.js";
+import EditProfile from "admin/views/pages/EditProfile.js";
+import AllPosts from "admin/views/pages/AllPosts.js";
+import AdminPostDetails from "admin/views/pages/AdminPostDetails.js";
+import EditPost from "admin/views/pages/EditPost.js";
 
 class Admin extends React.Component {
   componentDidUpdate(e) {
@@ -57,7 +63,7 @@ class Admin extends React.Component {
         return routes[i].name;
       }
     }
-    return "Brand";
+    return "GDI";
   };
   render() {
     return (
@@ -66,7 +72,7 @@ class Admin extends React.Component {
           {...this.props}
           routes={routes}
           logo={{
-            innerLink: "/admin/index",
+            innerLink: "/admin",
             imgSrc: require("../assets/img/brand/argon-react.png"),
             imgAlt: "..."
           }}
@@ -78,7 +84,13 @@ class Admin extends React.Component {
           />
           <Switch>
             {this.getRoutes(routes)}
-            <Redirect from="*" to="/admin/index" />
+            <Route path="/admin/posts" component={AllPosts} />
+            <Route path="/admin/post_details/:postId" component={AdminPostDetails}/>
+            <Route path="/admin/edit-post/:postId" component={EditPost} />
+            <Route path="/admin/members" component={Members} />
+            <Route path="/admin/profile/:userId" component={UserProfile} />
+            <Route path="/admin/edit-profile/:userId" component={EditProfile} />
+            <Redirect from="*" to="/admin/home" />
           </Switch>
           <Container fluid>
             <AdminFooter />

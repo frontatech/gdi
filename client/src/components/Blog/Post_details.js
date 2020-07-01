@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from "react";
 import { Link,} from "react-router-dom";
-import axios from 'axios'
+import moment from 'moment'
 // reactstrap components
 import {
   Button,
@@ -42,14 +42,14 @@ function PostDetails({location,history}) {
     getComments(`/comments/${slug}`)
     console.log(totalComments)
     return () => {}
-  }, [location,history])
+  }, [location, history])
   
   
   return (
     <>
       
       <div className="wrapper">
-        <LandingPageHeader />
+        <LandingPageHeader title="Post details" background={require("assets/img/bg5.jpg")} />
         <div className="section section-about-us">
           <Container fluid>
             <Row>
@@ -65,10 +65,11 @@ function PostDetails({location,history}) {
                           <h5 className="font-weight-bold text-justify text-black subtitle">
                               {post.post_descript}
                           </h5>
+                          <p className="text-yellow">Posted on {moment(post.post_date).format("MMM Do YYYY")}</p>
                           <div className="text-justify" dangerouslySetInnerHTML={contentMarkup(post.post_content)} />
                           <CommentForm postId={post.post_id} updateCommment={updateCommment}/>
                           <Comments comments={comments} />
-                          {totalComments > 5 ? (<div className="col text-center">
+                          {totalComments > 5 && showLoadBtn? (<div className="col text-center">
                                 <Button
                                 className="btn-round btn-white"
                                 color="primary"

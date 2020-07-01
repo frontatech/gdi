@@ -23,33 +23,22 @@ const Managers = ({showAnOnlineUser}) => {
           slidesToSlide: 1, // optional, default to 1.
         },
       };
-    const emptyWinners = [{
-        playerAward:4000,
-        playerGameYear:2019,
-        playerId:'kdls',
-        playerPosition: 3,
-        playerReward: '31-12-2019'
-    },
-    {
-        playerAward:4000,
-        playerGameYear:2019,
-        playerId:'kdls',
-        playerPosition: 3,
-        playerReward: '31-12-2019'
-    },
-    {
-        playerAward:4000,
-        playerGameYear:2019,
-        playerId:'kdls',
-        playerPosition: 3,
-        playerReward: '31-12-2019'
-    },{
-        playerAward:4000,
-        playerGameYear:2019,
-        playerId:'kdls',
-        playerPosition: 3,
-        playerReward: '31-12-2019'
-    }
+    const gdiManagers = [{
+        managerName:"Ori Chukwu Washpam",
+        managerPhoto: require("../../assets/img/manager0.jpg"),
+        managerPosition:'Chairman/CEO GDI'
+        },
+        {
+        managerName:"Chief Dr. Offor Okorie",
+        managerPhoto: require("../../assets/img/manager1.jpg"),
+        managerPosition:'BOT Chairman GDI'
+        },
+        {
+        managerName:"Reverend Father Reverend",
+        managerPhoto: require("../../assets/img/manager2.jpg"),
+        managerPosition:'Grand Patron GDI'
+        }
+    
 ]
     return (
         <div className="section section-examples bg-black">
@@ -115,29 +104,28 @@ const Managers = ({showAnOnlineUser}) => {
                                         </div>
                                     </Card>
                                 </div>)
-                            })): (emptyWinners.map((winner,index) =>{
+                            })): (gdiManagers.map((manager,index) =>{
                                 return (
                                     <div key={index} style={{padding:10}}>
                                         <Card>
                                             <div className="card-body">
-                                            <div className="card-image" src={backgroundImage} />
                                             <img
-                            alt="..."
-                            className="rounded img-raised"
-                            src={require("assets/img/julie.jpg")}
-                            ></img>
-                                <h3 className="font-weight-bold text-center text-black">
-                                John Doe John Doe OwarriMan
-                                </h3>
-                                <p className="font-weight-normal text-center">
-                                Chairman, Grassroots Development Iniatiative                                    
-                                </p>                           
+                                                alt="..."
+                                                className="rounded img-raised"
+                                                src={manager.managerPhoto}
+                                                ></img>
+                                                    <h3 className="font-weight-bold text-center text-black">
+                                                    {manager.managerName}
+                                                    </h3>
+                                                    <p className="font-weight-normal text-center">
+                                                    {manager.managerPosition}
+                                                    </p>                           
                                                 </div>               
-                            </Card>
-                        </div>
-                        )
-                    }))
-                } 
+                                                </Card>
+                                            </div>
+                                            )
+                                        }))
+                                    } 
         </Carousel>
     </Container>
     </div>

@@ -1,12 +1,13 @@
 import React,{useState, useContext} from 'react'
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import {Card, i, Container,Button } from 'reactstrap'
+import {Card, Container,Button } from 'reactstrap'
 import backgroundImage from '../../assets/img/bg4.jpg'
 import { PostContext } from 'context/PostContext';
 import { Link } from 'react-router-dom';
 const RecentPosts = ({showAnOnlineUser}) => {
-    const {posts} = useContext(PostContext)
+    // const {posts} = []//useContext(PostContext)
+    const posts = []
     const responsive = {
         desktop: {
           breakpoint: { max: 3000, min: 1024 },

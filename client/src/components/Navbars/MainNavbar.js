@@ -14,6 +14,14 @@ function MainNavbar() {
   const [navbarColor, setNavbarColor] = React.useState('navbarTry');
   const [collapseOpen, setCollapseOpen] = React.useState(false);
   React.useEffect(() => {
+    document.body.classList.add("sidebar-collapse");
+    document.documentElement.classList.remove("nav-open");
+    return function cleanup() {
+      // document.body.classList.remove("landing-page");
+      document.body.classList.remove("sidebar-collapse");
+    };
+  });
+  React.useEffect(() => {
     // document.body.scrollTop = 0
     // window.scrollTo(0,0)
     const updateNavbarColor = () => {
@@ -41,6 +49,7 @@ function MainNavbar() {
           id="bodyClick"
           onClick={() => {
             document.documentElement.classList.toggle("nav-open");
+            document.body.classList.remove("sidebar-collapse");
             setCollapseOpen(false);
           }}
         />
@@ -79,6 +88,7 @@ function MainNavbar() {
             </button>
           </div>
           <Collapse
+          onClick={() => setCollapseOpen(false)}
             className="justify-content-end"
             isOpen={collapseOpen}
             navbar
@@ -89,7 +99,7 @@ function MainNavbar() {
                   to="/"
                   className="nav-link"
                 >
-                  <i className="now-ui-icons fas fas-home"></i>
+                  <i className="fa fa-home text-yellow"></i>
                   <p>Home</p>
                 </Link>
               </NavItem>
@@ -98,7 +108,7 @@ function MainNavbar() {
                   to="/about-us"
                   className="nav-link"
                 >
-                  <i className="now-ui-icons arrows-1_cloud-download-93"></i>
+                  <i className="fa fa-users text-yellow"></i>
                   <p>About Us</p>
                 </Link>
               </NavItem>
@@ -107,7 +117,7 @@ function MainNavbar() {
                   to="/our-services"
                   className="nav-link"
                 >
-                  <i className="now-ui-icons arrows-1_cloud-download-93"></i>
+                  <i className="fa fa-cogs text-yellow"></i>
                   <p>Our Services</p>
                 </Link>
                 
@@ -118,7 +128,7 @@ function MainNavbar() {
                   className="nav-link"
                   
                 >
-                  <i className="now-ui-icons arrows-1_cloud-download-93"></i>
+                  <i className="fa fa-book text-yellow"></i>
                   <p>Blog</p>
                 </Link>
                 
@@ -129,7 +139,7 @@ function MainNavbar() {
                   className="nav-link"
                   
                 >
-                  <i className="now-ui-icons arrows-1_cloud-download-93"></i>
+                  <i className="fa fa-image text-yellow"></i>
                   <p>Gallery</p>
                 </Link>
               </NavItem>
@@ -138,7 +148,7 @@ function MainNavbar() {
                   to="/events"
                   className="nav-link"
                 >
-                  <i className="now-ui-icons arrows-1_cloud-download-93"></i>
+                  <i className="fa fa-calendar text-yellow"></i>
                   <p>Events</p>
                 </Link>
               </NavItem>
@@ -147,15 +157,16 @@ function MainNavbar() {
                   to="/contact-us"
                    className="nav-link"
                 >
-                  <i className="now-ui-icons arrows-1_cloud-download-93"></i>
+                  <i className="fa fa-phone text-yellow"></i>
                   <p>Contact Us</p>
                 </Link>
               </NavItem>
               <NavItem>
                 
                 <Button
-                  className="nav-link btn-danger"
+                  className="nav-link"
                   tag={Link}
+                  color="danger"
                   to="/donate"
                   id="donate-now"
                 >

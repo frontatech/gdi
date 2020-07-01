@@ -8,18 +8,15 @@ import {
   Card,
   Col
 } from "reactstrap";
-
-// core components
-import LandingPageHeader from "../Headers/LandingPageHeader.js";
+import moment from 'moment'
 import { PostContext } from "context/PostContext.js";
 function BlogPosts() {
   const {posts,showLoadBtn,totalPosts,showBtnText,loadMorePosts} = useContext(PostContext)
+  console.log(posts)
   useEffect(() => {
-    document.body.classList.add("landing-page");
     document.body.classList.add("sidebar-collapse");
     document.documentElement.classList.remove("nav-open");
     return function cleanup() {
-      document.body.classList.remove("landing-page");
       document.body.classList.remove("sidebar-collapse");
     };
   });
@@ -27,8 +24,7 @@ function BlogPosts() {
   return (
     <>
       
-      <div className="wrapper">
-        <LandingPageHeader />
+      
         <div className="section section-about-us blog">
           <Container fluid>
             <Row>
@@ -41,10 +37,10 @@ function BlogPosts() {
                             className="rounded img-raised"
                             src={require("assets/img/bg3.jpg")}
                             ></img>
-                                <h5 className="font-weight-bold text-justify text-black title">
+                                <p className="font-weight-bold text-justify text-black">
                                     {post.post_title}
-                                </h5>
-                                <p className="text-muted">{post.post_date}</p>
+                                </p>
+                                <p className="text-yellow">Posted on {moment(post.post_date).format("MMM Do YYYY")}</p>
                                 <p className="font-weight-normal text-justify description">
                                     {post.post_descript}    
                                 </p>   
@@ -63,7 +59,7 @@ function BlogPosts() {
                             </div>               
                         </Card>
                     </Col>   )
-                )): null}
+                )): <h1 className="text-center">Sorry, there is no post right now. Come back later.</h1>}
                  
             </Row>
             <div className="col text-center">
@@ -80,7 +76,6 @@ function BlogPosts() {
             </div>        
           </Container>
         </div>
-      </div>
     </>
   );
 }

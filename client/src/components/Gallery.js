@@ -5,11 +5,6 @@ import { photos } from './misc/photos';
 import LandingPageHeader from './Headers/LandingPageHeader';
 import ScrollTop from './misc/ScrollTop';
 
-
-/* popout the browser and maximize to see more rows! -> */
-
-
-
 const PhotoGallery = ({location}) => {
   ScrollTop(location)
      const [currentImage, setCurrentImage] = useState(0);
@@ -27,7 +22,7 @@ const PhotoGallery = ({location}) => {
     
     return (
         <div className="wrapper">
-        <LandingPageHeader />
+        <LandingPageHeader title={"Our Gallery"} background={require("assets/img/bg15.jpg")}/>
         <div>
       <Gallery photos={photos} onClick={openLightbox} />
       <ModalGateway>

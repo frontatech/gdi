@@ -3,9 +3,6 @@ import React from "react";
 
 // reactstrap components
 import { Container } from "reactstrap";
-
-// core components
-
 function DefaultFooter() {
   return (
     <>
