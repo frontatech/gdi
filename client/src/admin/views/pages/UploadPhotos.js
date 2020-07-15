@@ -33,9 +33,13 @@ import {
 // core components
 import axios from 'axios'
 import GeneralHeader from "../../Headers/GeneralHeader";
+import { GeneralContext } from "admin/context/GeneralContext";
+import { UPLOADED_FILES } from "admin/actions/actions";
 
 const UploadPhotos = ({history}) => {
+  const {dispatch} = useContext(GeneralContext)
   const [postPhotoFiles, setPostPhotoFiles] = useState([])
+  const [uploadFiles, setUploadFiles] = useState(null)
   const [caption, setCaption] = useState('')
   const [loader, setLoader] = useState(false)
   const [message, setMessage] = useState(false)
@@ -55,6 +59,7 @@ const UploadPhotos = ({history}) => {
     if(fileArray.length !== 0){
       fileArray = postPhotoFiles.concat(fileArray)
       setPostPhotoFiles(fileArray)
+      setUploadFiles(files)
     }
   }
   // this function handles removal of post photo file 
@@ -69,8 +74,12 @@ const UploadPhotos = ({history}) => {
   const handleSubmit = e =>{
     e.preventDefault()
     const formData =  new FormData()
-    formData.append('galleryFiles', postPhotoFiles[0])
+    postPhotoFiles.forEach( postPhotoFile => {
+      console.log(postPhotoFile)
+      formData.append('galleryFiles',postPhotoFile.file)
+    })
     formData.append('caption', caption)
+    formData.append("admin",1)
     let isError = false
     if(postPhotoFiles.length <= 0){
       isError = true
@@ -81,20 +90,18 @@ const UploadPhotos = ({history}) => {
       return setMessage('Please enter photo caption')
     }
     if(!isError){
+      setMessage('')
       axios.post('/uploadToGallery',formData, {withCredentials: true, headers:{
         'Content-Type': 'multipart/form-data', 'Access-Control-Allow-Origin':"*"
             }}).then(res =>{
-        console.log(res)
-        // setLoader(false)
-        if(res.data.eventStatus){
-            // RESET EVENT FORM
-            // resetFormInputs()
-            // return setContentError(res.data.message)
-        }
+              setLoader(false)
+              setMessage(res.data.message)
+              dispatch({type:UPLOADED_FILES,payload:res.data.photoFiles})
       }).catch(error =>{
-        console.log(error)
-          // setLoader(false)
-          // setContentError("An error occurred, please check your input fields and try again")
+        setLoader(false)
+        if(error.response){
+          setMessage(error.response.data.error)
+        }
       })
     }
   }
@@ -156,7 +163,7 @@ const UploadPhotos = ({history}) => {
                               onChange={handleCaptionChange}
                             />
                           </FormGroup>
-                          <p className="text-danger">{message}</p>
+                          
                         </Col>
                         {postPhotoFiles.length !== 0 ?
                           <div className="uploadPrevFile">
@@ -170,10 +177,16 @@ const UploadPhotos = ({history}) => {
                           </div>:null
                         }
                       </Row>
-                      
+                      <div className="d-block text-center">
+                        <p className="text-danger">{message}</p>
+                      </div>
                     </div>
                     <div className="pl-lg-4">
-                        {loader ? (<div className="spinner-border fast d-flex justify-content-center" role="status"><span className="sr-only">Loading...</span></div>): null}
+                    {loader ? (<div className="d-block text-center">
+                              <div className="spinner-border fast" role="status">
+                                <span className="sr-only">Loading...</span>
+                              </div>
+                          </div>): null}
                         
                         <div className="text-center mt-4">
                                 <Button onClick={handleSubmit} color="warning" outline type="submit">

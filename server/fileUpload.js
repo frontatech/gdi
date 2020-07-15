@@ -1,5 +1,6 @@
 let multer = require('multer')
-
+const util = require("util");
+const path = require("path");
 const isEmpty = (obj) =>{
     for(let item in obj) return false
     return true 
@@ -11,25 +12,34 @@ const handleImageFileUpload = (DIR,FILENAME, SIZE) =>{
             cb(null,DIR)
         },
         filename: (req, file, cb) =>{ 
-            const fileName = file.originalname.toLowerCase().split(' ').join('-');
-            cb(null, new Date().getTime() + '-' + fileName)
+            const match = ["image/png", "image/jpeg", "image/gif"];
+            if (match.indexOf(file.mimetype) === -1) {
+            var message = `${file.originalname} is invalid. Only accept png/jpeg/gif.`;
+            return callback(message, null);
+            }
+            let fileEx = file.originalname.split('.')[1]
+            const fileName = `GDI_IMG_${new Date().getTime()}.${fileEx}`//file.originalname.toLowerCase().split(' ').join('-');
+            cb(null, fileName)
         }
     })
     
-    const uploadFile = multer({
-        storage: storage,
-        fileFilter: (req, file, cb) =>{
-            if(file.mimetype === "image/png" || file.mimetype === "image/jpg" || file.mimetype === "image/jpeg"){
-               return cb(null, true)
-            }
-            else{
-                console.log(file)
-                cb(null, false)
-                return cb({error: "Only .png, .jpg or .jpeg format is allowed"})
-            }
+    const multerFileUpload = multer({storage: storage,limits: {fieldSize: 5* 1024*1024} }).array(FILENAME,SIZE)
+    const uploadFile = util.promisify(multerFileUpload);
+    const fileUpload = async (req, res, next) => {
+        try {
+          await uploadFile(req, res);
+          if (req.files.length <= 0) {
+            return res.status(403).json({error:`You must select at least 1 file.`});
+          }
+          next()
+        } catch (error) {
+            console.log(error)
+          if (error.code === "LIMIT_UNEXPECTED_FILE") {
+            return res.status(403).json({error:"You selected too many files to upload, you can only upload a maximum of 10 files at a time."});
+          }
+          return res.status(403).json({error:`Error when trying to upload many files: ${error}`});
         }
-    }).array(FILENAME,SIZE)
-    return {uploadFile}
+      };
+    return {fileUpload}
 }
 module.exports = {handleImageFileUpload, isEmpty}
-

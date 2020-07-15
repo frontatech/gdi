@@ -2,7 +2,7 @@ import React,{useState, useRef} from "react";
 import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBIcon, MDBCard, MDBCardBody } from 'mdbreact';
 import axios from 'axios'
 import JoditEditor from "jodit-react";
-import HandleRequest from "../functions/HandleRequest";
+import HandleRequest from "../functions/GeneralFunctions";
 import { Button } from "reactstrap";
 // import CkEditorApp from "./CkEditorApp";
 // import JodiEditorApp from "../JodiEditorApp"

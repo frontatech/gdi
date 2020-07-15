@@ -27,13 +27,13 @@ const removeUploadedFile = (res,url,type,object) =>{
         
     })
 }
-const removeFiles = (files, callback) =>{
+const removeUploadedFiles = (files,res) =>{
     files.forEach(filePath =>{
         fs.unlink(filePath,(err) =>{
-            if(err) callback(err)
-            return callback(null)
+            if(err) return res.status(403).json({error:"Upload failure, a technical error has occurred, refresh your page and try again"})
         })
     })
+    res.status(403).json({error:"Upload failure, some key objects are missing, please try again"})
 }
 
-module.exports ={ verifyPaystackPayment, logError,removeUploadedFile}
+module.exports ={ verifyPaystackPayment, logError,removeUploadedFile,removeUploadedFiles}

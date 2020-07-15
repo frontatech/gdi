@@ -19,12 +19,23 @@ import {
 // core components
 import GeneralHeader from "../../Headers/GeneralHeader";
 import { MembersContext } from "admin/context/MembersContext";
+import { DELETE_GDI_MEMBER } from "admin/actions/actions";
+import Axios from "axios";
 
 const Members = () => {
     const {memberState:{members,totalMembers}, dispatch} = useContext(MembersContext)
-    const handleDeleteMember = (e, id) =>{
+    const handleDeleteMember = async(e, id) =>{
         e.preventDefault()
-        // confirm("Are You Sure You Want Delete This Member? "+id)
+        try {
+            const res = await Axios.delete(`/members/${id}`)
+            if(res.data.success){
+                dispatch({type: DELETE_GDI_MEMBER,payload:res.data.userId})
+            }
+        } catch (error) {
+            if(error.response){
+                console.log(error.response.data)
+            }
+        }
     }
     return (
         <Fragment>

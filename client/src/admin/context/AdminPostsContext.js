@@ -6,7 +6,8 @@ import { POSTS } from 'admin/actions/actions'
 
 const initialState = {
     posts: [],
-    totalPosts: 0
+    totalPosts: 0,
+    postComments: [],
 }
 export const AdminPostsContext = createContext()
 export const AdminPostsProvider = props => {

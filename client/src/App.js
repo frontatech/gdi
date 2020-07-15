@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router} from "react-router-dom";
+// sun editor styles
 // styles for this kit
 import 'bootstrap-css-only/css/bootstrap.min.css'
 import "./admin/assets/plugins/nucleo/css/nucleo.css";
@@ -16,7 +17,10 @@ import "./assets/css/app.css";
 import WrapperRouter from "./components/WrapperRouter";
 import {CookiesProvider} from 'react-cookie'
 
+
+
 const App = () => {
+
     return (
         <Router>
             <CookiesProvider>

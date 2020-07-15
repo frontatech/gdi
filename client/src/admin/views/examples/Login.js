@@ -36,6 +36,7 @@ import {
 import { Redirect } from "react-router-dom";
 import { LoginUser } from "../../functions/UserFunctions";
 import { UserAuthContext } from "../../context/UserAuthContext";
+import { LOGIN_USER } from "admin/actions/actions";
 
 const Login = ({history,location}) =>{
   const {user:{isAuthenticated},dispatch} = useContext(UserAuthContext)
@@ -61,20 +62,24 @@ const Login = ({history,location}) =>{
       setErrors(previous => ({...previous,pwdError:'Please enter your paasword'}))
     }
     if(pass){
-      try {
-        const user = {username,password}
-        let res = await LoginUser(user)
-        if(!res.data.access){
-          return setErrors(previous => ({...previous,message:res.data.message}))
+      const user = {username,password}
+      let res = await LoginUser(user)
+      console.log(res)
+      if(res.response){
+        const result = res.response
+        if(result.data.access){
+          const data = result.data
+          localStorage.setItem('idgAToken',data.token)
+          dispatch({type:LOGIN_USER,payload:{...data.user}})
         }
-        // getUser(res.data.token)
-        dispatch({type:"LOGIN_USER",user:{...res.data.user}})
-        // localStorage.setItem('user-auth-token',res.data.token)
-        return history.push('/admin')
-      } catch (error) {
-        setErrors(previous => ({...previous,message:'Sorry, an error occurred, Try again later'}))
-        console.log(error)
       }
+      else{
+        const error = res.error
+        if(error.response){
+          setErrors(previous => ({...previous,message: error.response.data.error}))
+        }
+      }
+      
     }
   }
   const {from} = location.state || {from: {pathname: '/admin'}}
@@ -84,7 +89,27 @@ const Login = ({history,location}) =>{
     return (
       <>
         <Col lg="5" md="7">
-          <Card className="bg-secondary shadow border-0">
+          <Card className="shadow border-0">
+            <CardHeader>
+              <div className="d-block text-center">
+              <div className="card-profile-image">
+                <a
+                      className="avatar avatar-sm"
+                      href="#pablo"
+                      id="tooltip804044742"
+                      onClick={e => e.preventDefault()}
+                    >
+                  <img
+                    alt="..."
+                    style={{width:100, height: 100, maxWidth: 100}}
+                    className="rounded-circle"
+                    src={require("../../assets/img/theme/team-3-800x800.jpg")}
+                    
+                  />
+                </a>
+                </div>
+              </div>
+            </CardHeader>
             <CardBody className="px-lg-5 py-lg-5">
               <div className="text-center text-muted mb-4">
                 <small>Or sign in with credentials</small>
@@ -100,7 +125,7 @@ const Login = ({history,location}) =>{
                     <Input value={username} onChange={updateName} placeholder="Email" type="email" autoComplete="new-email"/>
                   </InputGroup>
                 </FormGroup>
-                <span>{errors.userError}</span>
+                <span className="text-danger">{errors.userError}</span>
                 <FormGroup>
                   <InputGroup className="input-group-alternative">
                     <InputGroupAddon addonType="prepend">
@@ -111,7 +136,7 @@ const Login = ({history,location}) =>{
                     <Input value={password} onChange={updatePassword} placeholder="Password" type="password" autoComplete="new-password"/>
                   </InputGroup>
                 </FormGroup>
-                <span>{errors.pwdError}</span>
+                <span className="text-danger">{errors.pwdError}</span>
                 <div className="custom-control custom-control-alternative custom-checkbox">
                   <input
                     className="custom-control-input"
@@ -142,7 +167,7 @@ const Login = ({history,location}) =>{
                 href="#pablo"
                 onClick={e => e.preventDefault()}
               >
-                <small>Forgot password?</small>
+                Forgot password
               </a>
             </Col>
           </Row>

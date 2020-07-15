@@ -16,7 +16,7 @@
 
 */
 /*eslint-disable*/
-import React from "react";
+import React, { useState, useContext } from "react";
 import { NavLink as NavLinkRRD, Link } from "react-router-dom";
 // nodejs library to set properties for components
 import { PropTypes } from "prop-types";
@@ -51,42 +51,45 @@ import {
   Row,
   Col
 } from "reactstrap";
-
+import { useCookies } from "react-cookie";
+import { logoutUser } from "admin/functions/UserFunctions";
+import { UserAuthContext } from "admin/context/UserAuthContext";
+import { LOG_OUT } from "admin/actions/actions";
 var ps;
 
-class Sidebar extends React.Component {
-  state = {
-    collapseOpen: false
-  };
-  constructor(props) {
-    super(props);
-    this.activeRoute.bind(this);
+const Sidebar = props =>{
+  const {user:{user},dispatch} = useContext(UserAuthContext)
+
+  const [cookies, setCookie,removeCookie] = useCookies(['idgLocalToken','idgAToken','idgRefreshToken'])
+  const handleLogout = async (e) =>{
+    e.preventDefault()
+    const res = await logoutUser()
+    console.log(res)
+    removeCookie('idgLocalToken',{path:'/'})
+    dispatch({type: LOG_OUT,payload:{}})   
   }
+  const [collapseOpen, setCollapseOpen] = useState(false)
   // verifies if routeName is the one active (in browser input)
-  activeRoute(routeName) {
-    return this.props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
+  const activeRoute = (routeName) =>{
+    return props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
   }
   // toggles collapse between opened and closed (true/false)
-  toggleCollapse = () => {
-    this.setState({
-      collapseOpen: !this.state.collapseOpen
-    });
+  const toggleCollapse = () => {
+    setCollapseOpen(!collapseOpen)
   };
   // closes the collapse
-  closeCollapse = () => {
-    this.setState({
-      collapseOpen: false
-    });
+  const closeCollapse = () => {
+    setCollapseOpen(false)
   };
   // creates the links that appear in the left menu / Sidebar
-  createLinks = routes => {
+  const createLinks = routes => {
     return routes.map((prop, key) => {
       return (
         <NavItem key={key}>
           <NavLink
             to={prop.layout + prop.path}
             tag={NavLinkRRD}
-            onClick={this.closeCollapse}
+            onClick={closeCollapse}
             activeClassName="active"
           >
             <i className={prop.icon} />
@@ -96,8 +99,7 @@ class Sidebar extends React.Component {
       );
     });
   };
-  render() {
-    const { bgColor, routes, logo } = this.props;
+    const { bgColor, routes, logo } = props;
     let navbarBrandProps;
     if (logo && logo.innerLink) {
       navbarBrandProps = {
@@ -121,7 +123,7 @@ class Sidebar extends React.Component {
           <button
             className="navbar-toggler"
             type="button"
-            onClick={this.toggleCollapse}
+            onClick={toggleCollapse}
           >
             <span className="navbar-toggler-icon" />
           </button>
@@ -165,26 +167,14 @@ class Sidebar extends React.Component {
               </DropdownToggle>
               <DropdownMenu className="dropdown-menu-arrow" right>
                 <DropdownItem className="noti-title" header tag="div">
-                  <h6 className="text-overflow m-0">Welcome!</h6>
+                  <h6 className="text-overflow m-0">Welcome {user.username}</h6>
                 </DropdownItem>
                 <DropdownItem to="/admin/user-profile" tag={Link}>
                   <i className="ni ni-single-02" />
                   <span>My profile</span>
                 </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
-                  <i className="ni ni-settings-gear-65" />
-                  <span>Settings</span>
-                </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
-                  <i className="ni ni-calendar-grid-58" />
-                  <span>Activity</span>
-                </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
-                  <i className="ni ni-support-16" />
-                  <span>Support</span>
-                </DropdownItem>
                 <DropdownItem divider />
-                <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
+                <DropdownItem href="#pablo" onClick={e => handleLogout(e)}>
                   <i className="ni ni-user-run" />
                   <span>Logout</span>
                 </DropdownItem>
@@ -192,7 +182,7 @@ class Sidebar extends React.Component {
             </UncontrolledDropdown>
           </Nav>
           {/* Collapse */}
-          <Collapse navbar isOpen={this.state.collapseOpen}>
+          <Collapse navbar isOpen={collapseOpen}>
             {/* Collapse header */}
             <div className="navbar-collapse-header d-md-none">
               <Row>
@@ -213,7 +203,7 @@ class Sidebar extends React.Component {
                   <button
                     className="navbar-toggler"
                     type="button"
-                    onClick={this.toggleCollapse}
+                    onClick={toggleCollapse}
                   >
                     <span />
                     <span />
@@ -238,7 +228,7 @@ class Sidebar extends React.Component {
               </InputGroup>
             </Form>
             {/* Navigation */}
-            <Nav navbar>{this.createLinks(routes)}</Nav>
+            <Nav navbar>{createLinks(routes)}</Nav>
             {/* Divider */}
             <hr className="my-3" />
             {/* Heading */}
@@ -256,7 +246,6 @@ class Sidebar extends React.Component {
         </Container>
       </Navbar>
     );
-  }
 }
 
 Sidebar.defaultProps = {

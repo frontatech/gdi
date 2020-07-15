@@ -28,6 +28,8 @@ import AddEvent from "./views/pages/AddEvent.js";
 import RequestFund from "./views/pages/RequestFund.js";
 import AddAdmin from "./views/pages/AddAdmin.js";
 import UploadPhotos from "./views/pages/UploadPhotos.js";
+import AdminUsers from "./views/pages/AdminUsers.js";
+import MailTemplates from "./views/pages/MailTemplates.js";
 
 let routes = [
   {
@@ -73,10 +75,10 @@ let routes = [
     layout: "/admin"
   },
   {
-    path: "/send_newsletter",
+    path: "/mail_templates",
     name: "Send Newsletter",
     icon: "ni ni-send text-orange",
-    component: Maps,
+    component: MailTemplates,
     layout: "/admin"
   },
   {
@@ -97,7 +99,7 @@ let routes = [
     path: "/admin_users",
     name: "All Admin Users",
     icon: "ni ni-planet text-blue",
-    component: Icons,
+    component: AdminUsers,
     layout: "/admin"
   },
   {

@@ -33,90 +33,95 @@ import {
 // core components
 import axios from 'axios'
 import GeneralHeader from "../../Headers/GeneralHeader";
+import { ADD_ADMIN } from "admin/actions/actions";
+import { AdminUsersContext } from "admin/context/AdminUsersContext";
+import { UserAuthContext } from "admin/context/UserAuthContext";
+const AddAdmin = (props) => {
+  const {dispatch} = useContext(AdminUsersContext)
+  const {user:{user}} = useContext(UserAuthContext)
+  const [adminUsername, setAdminUsername] = useState('')
+  const [adminRole, setAdminRole] = useState('')
+  const [adminPassword, setPassword] = useState('') 
+  const [adminConfPwd, setConfPwd] = useState('')
+  const [loader, setLoader] = useState(false)
+  const [message, setMessage] = useState('')
+  // error variables
+  const [usernameError, setUsernameError] = useState('')
+  const [roleError, setRoleError] = useState('')
+  const [pwdError, setPwdError] = useState('')
+  const [confPwdError, setConfPwdError] = useState('')
+  // event functions
+  const handleNameChange = (e) =>{
+      setUsernameError('')
+      setAdminUsername(e.target.value)
+  }
+  const handleRoleChange = e =>{
+      setRoleError('')
+      setAdminRole(e.target.value)
+  }
+  const handlePwdChange = e =>{
+      setPwdError('')
+      setPassword(e.target.value)
+  }
+  const handleConfChange = e =>{
+      setConfPwdError('')
+      setConfPwd(e.target.value)   
+  }
+  const resetFormInputs = () =>{
+    setAdminUsername('')
+    setAdminRole('')
+    setPassword('')
+    setConfPwd('')
+  }
 
-const AddAdmin = ({history}) => {
-  const editor = useRef(null)
-    const config = {
-        readonly: false,
-        uploader:{
-            insertImageAsBase64URI: true
-        }
-    }
-    // post variables
-    const [adminUsername, setAdminUsername] = useState('')
-    const [adminRole, setAdminRole] = useState('')
-    const [adminPassword, setPassword] = useState('') 
-    const [adminConfPwd, setConfPwd] = useState('')
-    const [loader, setLoader] = useState(false)
-    const [message, setMessage] = useState('')
-    // error variables
-    const [usernameError, setUsernameError] = useState('')
-    const [roleError, setRoleError] = useState('')
-    const [pwdError, setPwdError] = useState('')
-    const [confPwdError, setConfPwdError] = useState('')
-    // event functions
-    const handleNameChange = (e) =>{
-        setUsernameError('')
-        setAdminUsername(e.target.value)
-    }
-    const handleRoleChange = e =>{
-        setRoleError('')
-        setAdminRole(e.target.value)
-    }
-    const handlePwdChange = e =>{
-        setPwdError('')
-        setPassword(e.target.value)
-    }
-    const handleConfChange = e =>{
-        setConfPwdError('')
-        setConfPwd(e.target.value)   
-    }
-    const resetFormInputs = () =>{
-      setAdminUsername('')
-      setAdminRole('')
-      setPassword('')
-      setConfPwd('')
-    }
-
-    const handleSubmit = e =>{
-        e.preventDefault()
-        let isError = false;
-        if(adminUsername.trim() === "") {
-          setUsernameError("Enter Admin Username")
+  const handleSubmit = e =>{
+      e.preventDefault()
+      let isError = false;
+      if(adminUsername.trim() === "") {
+        setUsernameError("Enter Admin Username")
+        isError = true;
+      }
+      if(adminRole.trim() === "" || adminRole.trim() === "Select Admin") {
+        setRoleError("Select Admin Role")
+        isError = true;
+      }
+      if(adminPassword.length < 8){
+        setPwdError("Password can not be less than 8 characters")
+        isError = true;
+      }
+      if(adminPassword.trim() === "") {
+        setPwdError("Enter Admin Password")
+        isError = true;
+        return
+      }
+      
+      if(adminConfPwd.trim() !== adminPassword.trim()) {
+        setConfPwdError("Two passwords do not match")
+        isError = true;
+      }
+      if(adminConfPwd.trim() === "") {
+          setConfPwdError("Confirm password cannot be empty")
           isError = true;
-        }
-        if(adminRole.trim() === "" || adminRole.trim() === "select") {
-          setRoleError("Select Admin Role")
-          isError = true;
-        }
-        if(adminPassword.trim() === "") {
-          setPwdError("Enter Admin Password")
-          isError = true;
-        }
-        if(adminConfPwd.trim() !== adminPassword.trim()) {
-          setConfPwdError("Two passwords do not match")
-          isError = true;
-        }
-        if(adminConfPwd.trim() === "") {
-            setConfPwdError("Confirm password cannot be empty")
-            isError = true;
-        }
-        if(!isError){
-            setLoader(true)
-            let user = {adminUsername, adminRole,adminPassword}
-            axios.post('/addAdmin',user).then(res =>{
-                    console.log('im here')
-                    console.log(res)
-                    setLoader(false)
-                        // RESET POST FORM
-                        resetFormInputs()
-                        return setMessage(res.data.message)
-                }).catch(error =>{
-                  setMessage('Sorry, An error occured. Make sure all fields filled')
-                    // return history.push('/auth/login')
-                })
-              }
+      }
+      if(!isError){
+          setLoader(true)
+          setMessage('')
+          let user = {username:adminUsername, role:adminRole,password:adminPassword}
+          axios.post('/register',user).then(res =>{
+                  setLoader(false)
+                  resetFormInputs()
+                  setMessage(res.data.message)
+                  dispatch({type: ADD_ADMIN, payload: [res.data.admin]})
+                  
+              }).catch(error =>{
+                setLoader(false)
+                if(error.response){
+                  setMessage(error.response.data.error)
+                }
+                
+              })
             }
+          }
     return (
       <Fragment>
         <GeneralHeader />
@@ -167,7 +172,7 @@ const AddAdmin = ({history}) => {
                             </label>
                             <select value={adminRole} onChange={handleRoleChange} className="form-control">
                               <option value="select">Select Admin</option>
-                              <option value="super">Super</option>
+                              {user.role === "ceo" ?<option value="super">Super</option>:null}
                               <option value="editor">Editor</option>
                               <option value="author">Author</option>
                             </select>
@@ -221,6 +226,11 @@ const AddAdmin = ({history}) => {
                           <br />
                         </Col>
                       </Row>
+                      {loader ? (<div className="d-block text-center">
+                              <div className="spinner-border fast" role="status">
+                                <span className="sr-only">Loading...</span>
+                              </div>
+                          </div>): null}
                       <p className="text-info">{message}</p>
                     </div>
                     <div className="pl-lg-4">                        

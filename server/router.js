@@ -4,59 +4,218 @@ let db = require('./db')
 let slugify =  require('slugify')
 let paystack = require('paystack')('sk_test_14199c12c5c6aeadacf3819c05238fb6a65d84e4');
 let {handleImageFileUpload,isEmpty} = require('./fileUpload')
-let {verifyPaystackPayment, logError,removeUploadedFile,removeFiles} = require('./helper')
-let fs = require('fs')
+let {verifyPaystackPayment, logError,removeUploadedFile,removeUploadedFiles} = require('./helper')
 
+// getting all the admin members
+router.get("/allAdminUsers",(req,res)=>{
+    console.log('request all admins')
+    let sql = "SELECT * FROM users; SELECT COUNT(*) as total FROM users"
+    db.query(sql,(err, result) =>{
+        if(err){
+            return res.status(404).json({message: "Sorry, an error occurred"})
+        }
+        if(result.length !== 0){
+            let admins = result[0]
+            admins = admins.map(result => ({ id: result.id, fullName: result.full_name, username: result.username, fbLink: result.fb_link, instalink: result.instalink, twitterLink: result.twitter_link, linkedin: result.linkedin, email: result.email, status: result.status, role: result.role, total_posts: result.total_posts } ))
+            return res.json({admins,total:result[1][0].total})
+        }
+        return res.json({message: "Sorry no member found yet"})
+        
+    })
+    
+})
 
+router.patch("/admin/block/:member_id",(req, res) =>{
+    console.log(req.params.member_id)
+    console.log(req.body)
+    const member = req.body.member
+    const user = req.body.user
+    if(member.id === user._id || member.role === user.role || isNaN(req.params.member_id) ||member.role === "ceo"){
+        return res.status(403).json({error: "You're not permitted to carry such operation"})
+    }
+    const sql = "UPDATE users SET ? WHERE id = ?" 
+    db.query(sql,[{status:member.status},member.id], (err, result) =>{
+        if(err){
+            return res.status(500).json({error: "Sorry an error occured, trying to execute command"})
+        }
+        return res.json({message: "User blocked successfully",member})
+    })
+})
+// chnage admin role
+router.patch("/admin/update/:member_id",(req, res) =>{
+    console.log(req.params.member_id)
+    console.log(req.body)
+    const member = req.body.member
+    const user = req.body.user
+    if(member.id === user._id || member.role === user.role || isNaN(req.params.member_id) || member.role === "ceo"){
+        return res.status(403).json({error: "You're not permitted to carry such operation"})
+    }
+    const sql = "UPDATE users SET ? WHERE id = ?" 
+    db.query(sql,[{role:member.role},member.id], (err, result) =>{
+        if(err){
+            return res.status(500).json({error: "Sorry an error occured, trying to execute command"})
+        }
+        return res.json({success: true,message: "User role updated successfully",member})
+    })
+})
 
+// deleting an admin member
+router.delete("/admin/delete",(req, res) =>{
+    console.log(req.query)
+    const currentAdmin = JSON.parse(req.query.user)
+    const member = JSON.parse(req.query.member)
+    console.log(currentAdmin.role)
+    if(currentAdmin.role === "ceo" && member.role !== "ceo" || currentAdmin.role === "super" && member.role !== "ceo" || currentAdmin.role === "super" && member.role !== "super"){
+        const sql = "DELETE FROM users WHERE id = ?" 
+        db.query(sql,[member.id], (err, result) =>{
+            if(err){
+                console.log('error')
+                return res.status(500).json({error: "Sorry an error occured, trying to execute command"})
+            }
+            console.log('success')
+            return res.json({message: "User deleted successfully",member})
+        })
+    }
+    else{
+        console.log("error fialed")
+        return res.status(403).json({error: "Sorry, you're not permitted to carry out such operation"})
+    }    
+})
 
 // adding new event
 // adding an event post to database
 const EVENT_DIR = "./public/event_images/";
 const EVENT_FILENAME = "fileToUpload";
-const EVENT_SIZE = 7
+const EVENT_SIZE = 1
 const acceptEventFile = handleImageFileUpload(EVENT_DIR,EVENT_FILENAME,EVENT_SIZE)
-router.post('/addevent', async (req,res) =>{
+router.post('/addevent', acceptEventFile.fileUpload, (req,res) =>{
     let eventStatus = false
     let isError = false
-    await acceptEventFile.uploadFile(req,res,(err) =>{
-        console.log(req.files)
-        if(err) return res.status(400).json({eventStatus,message: "Only .png, .jpg or .jpeg format allowed"})
-        const fileurl = req.protocol + '://'+ req.get('host')
-        let eventBg = fileurl + '/event_images/' +req.files[0].filename
-        let localUrl = EVENT_DIR + req.files[0].filename
-        let data = JSON.parse(JSON.stringify(req.body))
-        console.log(data)
-        if(isEmpty(data))return res.status(400).json({eventStatus,contentError:"Sorry you are not permitted to add data"})
-        if(data.eventTitle === "") isError = true
-        if(data.eventContent === "") isError =  true
-        if(data.eventDescript === "") isError = true
-        if(data.eventAuthor === "") isError = true 
-        if(data.eventStartDate === "") isError =true
-        if(data.eventEndDate === "") isError = true
-        if(data.eventTags === "") isError = true
-        if(isError){
-            // else remove the uploaded file
-            return removeUploadedFile(res, localUrl, 'error', {message:"Make sure you entered all fields",postStatus})
+    console.log(req.files)
+    const fileurl = req.protocol + '://'+ req.get('host')
+    let eventBg = `${fileurl}/${req.files[0].path}`
+    let localUrl = EVENT_DIR + req.files[0].filename
+    let data = JSON.parse(JSON.stringify(req.body))
+    console.log(data)
+    if(isEmpty(data))return res.status(403).json({eventStatus,contentError:"Sorry you are not permitted to add data"})
+    if(data.eventTitle === "") isError = true
+    if(data.eventContent === "") isError =  true
+    if(data.eventDescript === "") isError = true
+    if(data.eventAuthor === "") isError = true 
+    if(data.eventStartDate === "") isError =true
+    if(data.eventEndDate === "") isError = true
+    if(data.eventTime === "") isError = true
+    if(data.eventTags === "") isError = true
+    if(isError){
+        // else remove the uploaded file
+        return removeUploadedFile(res, localUrl, 'error', {message:"Make sure you entered all fields",postStatus})
+    }
+    else{
+        let event_slug = slugify(data.eventTitle,{lower:true,strict:true}).trim()
+        let event = {event_author: data.eventAuthor, event_content: data.eventContent, event_descript: data.eventDescript, event_title: data.eventTitle, event_date: new Date(), event_slug, event_bg: eventBg, event_start_date: data.eventStartDate, event_end_date: data.eventEndDate, event_tags:data.eventTags,event_expired:1,event_time: data.eventTime}
+        console.log(event_slug)
+        let sql = "INSERT INTO events SET ?"
+        db.query(sql, event, (err, result) =>{
+            console.log(err)
+            if(err){
+                return res.status(500).json({eventStatus,contentError:"Sorry an error occured trying to add event"})
+            }
+            eventStatus = true
+            event.event_id = result.insertId
+            return res.json({message: 'Event Added Successfully',eventStatus,event})
+        })
+        
+    }
+})
+
+// getting all the events
+router.get("/allEvents",(req,res)=>{
+    let sql = "SELECT * FROM events ORDER BY event_id desc LIMIT 40;SELECT COUNT(*) as total FROM events"
+    db.query(sql,(err, result) =>{
+        if(err){
+            return res.status(404).json({message: "Sorry, an error occurred"})
         }
-        else{
-            let event_slug = slugify(data.eventTitle,{lower:true,strict:true}).trim()
-            let event = {event_author: data.eventAuthor, event_content: data.eventContent, event_descript: data.eventDescript, event_title: data.eventTitle, event_date: new Date(), event_slug, event_bg: eventBg, event_start_date: data.eventStartDate, event_end_date: data.eventEndDate, event_tags:data.eventTags,event_expired:false}
-            console.log(event_slug)
-            let sql = "INSERT INTO events SET ?"
-            db.query(sql, event, (err, result) =>{
-                console.log(err)
-                if(err){
-                    // logError(db,{tableType: "posts",message:err.message})
-                    return res.status(400).json({eventStatus,contentError:"Sorry an error occured trying to add post"})
-                }
-                eventStatus = true
-                return res.json({message: 'Event Added Successfully',eventStatus})
-            })
-            
+        if(result.length !== 0){
+            return res.json({events:result[0],total:result[1][0].total})
         }
+        return res.status(400).json({message: "Sorry no post yest"})
         
     })
+    
+})
+// updating post background picture
+router.post('/updateEventBg', async (req,res) =>{
+    await acceptEventFile.uploadFile(req,res,(err) =>{
+        console.log(req.files)
+        if(err) return res.status(400).json({error: "Only .png, .jpg or .jpeg format allowed"})
+        const fileurl = req.protocol + '://'+ req.get('host')
+        let newLocalUrl = EVENT_DIR + req.files[0].filename
+        let event_bg = fileurl + '/public/event_images/' +req.files[0].filename
+        let data = JSON.parse(JSON.stringify(req.body))
+        console.log('my event update bg data is ',data)
+        const oldLocalUrl = EVENT_DIR + data.oldEventBg.split('event_images/')[1]
+        console.log('old',oldLocalUrl)
+        console.log('new',event_bg)
+        let sql = "UPDATE events SET event_bg = ? WHERE event_id = ?"
+        db.query(sql,[event_bg, data.event_id], (err, result) =>{
+        console.log(err)
+        if(err){
+            return removeUploadedFile(res,newLocalUrl,'error',{isError:true,error:"Sorry an error occured and command aborted. Please contact admin"})
+        }
+        // remove old picture if success
+            return removeUploadedFile(res,oldLocalUrl,'success',{isError:false,message: 'Event Cover Picture Updated Successfully',event:{event_bg,event_id:data.event_id}})
+        })
+    })
+})
+
+// updating event content
+router.post('/updateEvent', (req,res) =>{
+    let isError = false
+    let data = JSON.parse(JSON.stringify(req.body))
+    if(isEmpty(data))return res.status(400).json({error:"Sorry you are not permitted to add data",isError:true})
+    console.log(data)
+    if(data.eventContent === "") isError =  true
+    if(data.eventTitle === "") isError = true
+    if(data.eventDescript === "") isError = true
+    if(data.eventTags === "") isError = true
+    if(data.eventStartDate === "") isError = true
+    if(data.eventEndDate === "") isError = true
+    if(parseInt(data.eventId) === 0) isError = true
+    if(isError){
+        // else remove the uploaded file
+        return res.status(400).json({message:"Make sure you entered all fields",isError:true})
+    }
+    else{
+        let sql = "UPDATE events SET event_title = ?, event_descript = ?, event_tags = ?, event_content = ?, event_start_date = ?, event_end_date = ?, event_time = ? WHERE event_id = ?"
+        db.query(sql, [data.eventTitle, data.eventDescript, data.eventTags,data.eventContent, data.eventStartDate, data.eventEndDate, data.eventTime, data.eventId], (err, result) =>{
+            console.log(err)
+            if(err){
+                return res.status(500).json({error:"Sorry an error occured trying to update post, try again"})
+            }
+            return res.json({message: 'Event Updated Successfully',isError,event:{event_id: data.eventId, event_content: data.eventContent, event_descript: data.eventDescript, event_tags: data.eventTags, event_title: data.eventTitle, event_start_date: data.eventStartDate, event_end_date: data.eventEndDate, event_time: data.eventTime}})
+        })
+    }
+    
+})
+// deleting an event from the database
+router.delete("/events/:eventId",(req,res)=>{
+    console.log('event delete request arrived')
+    console.log(req.params.eventId)
+    const eventId = parseInt(req.params.eventId)
+    if(!isNaN(eventId)){
+        let sql = "DELETE  FROM events WHERE event_id = ?"
+        db.query(sql,[eventId],(err, result) =>{
+            if(err){
+                return res.status(500).json({error: "Sorry, an error occurred"})
+            }
+            console.log(result)
+            return res.json({success:true,eventId,message: "Event deleted successfully"})
+        })
+    }
+    else{
+        return res.status(401).json({error: "Sorry, an error occurred, invalid credentials sent"})
+    }
+    
 })
 
 // adding new event
@@ -65,14 +224,12 @@ const REQUEST_DIR = "./public/request_images/";
 const REQUEST_FILENAME = "fileToUpload";
 const REQUEST_SIZE = 7
 const acceptRequestFile = handleImageFileUpload(REQUEST_DIR,REQUEST_FILENAME,REQUEST_SIZE)
-router.post('/addRequest', async (req,res) =>{
+router.post('/addRequest', acceptRequestFile.fileUpload, (req,res) =>{
     let reqStatus = false
     let isError = false
-    await acceptRequestFile.uploadFile(req,res,(err) =>{
         console.log(req.files)
-        if(err) return res.status(400).json({reqStatus,message: "Only .png, .jpg or .jpeg format allowed"})
         const fileurl = req.protocol + '://'+ req.get('host')
-        let requestBg = fileurl + '/request_images/' +req.files[0].filename
+        let requestBg = `${fileurl + '/' +req.files[0].path}`
         let localUrl = REQUEST_DIR + req.files[0].filename
         let data = JSON.parse(JSON.stringify(req.body))
         console.log(data)
@@ -96,48 +253,14 @@ router.post('/addRequest', async (req,res) =>{
                 console.log(err)
                 if(err){
                     // logError(db,{tableType: "posts",message:err.message})
-                    return res.status(400).json({reqStatus,error:"Sorry an error occured trying to add post"})
+                    return res.status(500).json({reqStatus,error:"Sorry an error occured trying to add post"})
                 }
                 reqStatus = true
-                return res.json({message: 'Request Added Successfully',reqStatus})
+                request.req_id = result.insertId
+                return res.json({message: 'Request Added Successfully',reqStatus, request})
             })
             
         }
-        
-    })
-})
-
-// adding new admin in the db
-router.post("/addAdmin",(req,res)=>{
-    console.log('request arrived')
-    let isError = false
-    let data = JSON.parse(JSON.stringify(req.body))
-    console.log(data)
-    if(data.adminUsername === "") isError = true
-    if(data.adminRole === "") isError =  true
-    if(data.adminPassword === "") isError =  true
-    if(isError) return res.status(400).json({err:'All Fields are Required'})
-    let sql = "SELECT * FROM users WHERE username = ?"
-    db.query(sql,[data.adminUsername],(err, result) =>{
-        console.log(result)
-        if(err){
-            return res.status(404).json({err: "Sorry, an error occurred"})
-        }
-        if(result.length !== 0){
-            return res.status(201).json({err: "Username is already taken"})
-        }
-        const user = {username:data.adminUsername,email: '',password:data.adminPassword,status:data.adminRole,full_name:"",photo_url:'',fb_link:"", instalink:"",twitter_link:"",linkedin:""}
-        let query = "INSERT INTO users SET ?"
-        db.query(query, user, (err, success) =>{
-            if(err) {
-                return res.status(500).json({err:"Registration not Successful, An Error Occured"})
-           }
-           return res.json({message:"Registration Successful"})
-
-        })
-        
-    })
-    
 })
 
 // adding a new member to database
@@ -241,6 +364,7 @@ router.post("/addMember", async (req,res)=>{
             ngoTwo_res: data.responsiblityTwo, 
             ngoTwo_date: data.ngoDateTwo
         }
+        let memberData = {...member,...academic,...experience}
         db.beginTransaction((dbErr) =>{
             if(dbErr) return res.status(500).json({isError,error:"Sorry an error occured trying to execute command. Please contact admin"})
             let sql = "INSERT INTO members SET ?"
@@ -250,6 +374,7 @@ router.post("/addMember", async (req,res)=>{
                     return res.status(500).json({isError,error:"Sorry an error occured and command aborted. Please contact admin"})
                 }
                 const member_id = result.insertId
+                memberData.member_id = member_id
                 academic.member_id = member_id
                 experience.member_id = member_id
                 let insert = "INSERT INTO academics SET ?;INSERT INTO experience SET ?"
@@ -263,7 +388,7 @@ router.post("/addMember", async (req,res)=>{
                                 return res.status(500).json({isError,error:"Sorry an error occured trying to add member and we're being notified. Please contact admin"})
                             })
                         }
-                        res.json({message: 'Member Added Successfully',isError})
+                        res.json({message: 'Member Added Successfully',isError, member: memberData})
                         db.end()
                     })
                 })
@@ -485,25 +610,111 @@ const GALLERY_DIR = "./public/gallery_images/";
 const GALLERY_FILENAME = "galleryFiles";
 const GALLERY_SIZE = 10
 const acceptGalleryFiles = handleImageFileUpload(GALLERY_DIR,GALLERY_FILENAME,GALLERY_SIZE)
-router.post("/uploadToGallery", async (req,res)=>{
-    console.log('upload request arrived')
+router.post("/uploadToGallery", acceptGalleryFiles.fileUpload, (req, res) =>{
+    let data = JSON.parse(JSON.stringify(req.body))
     let isError = false
-    await acceptGalleryFiles.uploadFile(req,res,(err) =>{
-        console.log(req.files)
-        console.log(err)
-        if(err) return res.status(400).json({isError,message: "Only .png, .jpg or .jpeg format allowed"})
-        const fileurl = req.protocol + '://'+ req.get('host')
-        // let files = fileurl + '/gallery_images/' +req.files[0].filename
-        // let localUrl = GALLERY_DIR + req.files[0].filename
-        let data = JSON.parse(JSON.stringify(req.body))
-        console.log(data)
+    const uploadedFiles = req.files
+    console.log(uploadedFiles);
+    const fileurl = req.protocol + '://'+ req.get('host')
+    let localFiles = []
+    const filesToUpload = []
+    uploadedFiles.forEach(uploadedFile => {
+        // get the local file path
+        localFiles.push(GALLERY_DIR + uploadedFile.filename)
+        // create an array of files to upload
+        const fileArray = [`${fileurl}/${uploadedFile.path}`, data.caption, parseInt(data.admin), new Date()]
+        // push it to the array files to upload
+        filesToUpload.push(fileArray)
+    })
+    if(isEmpty(data)) isError = true
+    if(isNaN(data.admin) || parseInt(data.admin) === 0) isError = true
+    if(data.caption === "") isError = true
+    if(!isError){
+        const insert = "INSERT INTO gallery(file_name,file_caption, file_admin, file_date) VALUES ?"
+        db.query(insert,[filesToUpload],(err,result) =>{
+            if(err){
+                return removeUploadedFiles(localFiles,res)
+            }
+            console.log(result)
+            const insertId = result.insertId
+            const photoFiles = filesToUpload.map((photoFile,i) => ({
+                src: photoFile[0],
+                width: 1,
+                height: 1,
+                title: photoFile[1],
+                file_id: insertId + i
+            }) )
+            console.log(photoFiles)
+            return res.status(200).json({message: "Files uploaded successfully",photoFiles})
+        })
+    }
+    else{
+        removeUploadedFiles(localFiles,res)
+    }
+    
+    
+}) 
+// getting all GDI uploaded photos
+router.get("/photoGallery",(req,res)=>{
+    let sql = "SELECT * FROM gallery ORDER BY gallery_id desc LIMIT 20;SELECT COUNT(*) as total FROM gallery"
+    db.query(sql,(err, result) =>{
+        if(err){
+            return res.status(404).json({message: "Sorry, an error occurred"})
+        }
+        if(result.length !== 0){
+            console.log(result)
+            return res.json({photoFiles:result[0],total:result[1][0].total})
+        }
+        return res.status(400).json({message: "Sorry no post yest"})
+        
+    })
+    
+})
+
+// deleting a particular gallery file
+router.delete("/deletePhotoFile", (req, res)=>{
+    console.log("deletePhotoFile request has arrived")
+    console.log(req.query.file)
+    let data = JSON.parse(req.query.file)
+    const splitFile = data.src.split("gallery_images\\")
+    const localUrl = `./public/gallery_images/${splitFile[1]}`
+    let deleteFile = "DELETE FROM gallery WHERE gallery_id = ?"
+    db.query(deleteFile,[parseInt(data.file_id)],(err, result) =>{
+        if(err){
+            console.error(err)
+            return res.status(500).json({error: "Sorry an error occurred trying to delete this file, maka sure you have permission"})
+        }
+        return removeUploadedFile(res, localUrl, 'success', {message:"File deleted successfully",success: true,...data})
     })
 })
 
-// getting all the blog posts
+// loading more photos from the database
+router.post("/adminLoadMorePhotos",(req,res)=>{
+    console.log('request adminLoadMorePhotos arrived')
+    console.log(req.body)
+    const lastId = parseInt(req.body.lastId)
+    if(!isNaN(lastId)){
+        console.log(lastId)
+        let sql = `SELECT * FROM gallery WHERE gallery_id < ? ORDER BY gallery_id desc LIMIT 40`
+        db.query(sql,[lastId],(err, result) =>{
+            if(err){
+                return res.status(500).json({message: "Sorry, an error occurred"})
+            }
+            else{
+                return res.json({photoFiles:result})
+            }
+        })
+    }
+    else{
+        return res.status(403).json({message: "Sorry, an error occurred"})
+    }
+})
+
+// getting all GDI MEMBERS
+// let sql = "SELECT * FROM members,academics,experience WHERE members.member_id = academics.member_id AND members.member_id = experience.member_id LIMIT 60;SELECT COUNT(*) as total FROM members"
 router.get("/members",(req,res)=>{
     console.log('request arrived')
-    let sql = "SELECT * FROM members,academics,experience WHERE members.member_id = academics.member_id AND members.member_id = experience.member_id LIMIT 60;SELECT COUNT(*) as total FROM members"
+    let sql = "SELECT * FROM members LIMIT 50;SELECT COUNT(*) as total FROM members"
     db.query(sql,(err, result) =>{
         if(err){
             // logError(db,{tableType: "posts",message:err.message})
@@ -518,19 +729,120 @@ router.get("/members",(req,res)=>{
     
 })
 
+// deleting a gdi member
+router.delete("/members/:userId",(req,res)=>{
+    console.log('members delete request arrived')
+    console.log(req.params.userId)
+    const userId = parseInt(req.params.userId)
+    if(!isNaN(userId)){
+        let sql = "DELETE  FROM subscribers WHERE id = ?"
+        db.query(sql,[userId],(err, result) =>{
+            if(err){
+                return res.status(500).json({error: "Sorry, an error occurred"})
+            }
+            console.log(result)
+            return res.json({success:true,userId,message: "Subscriber delted sucessfully"})
+        })
+    }
+    else{
+        return res.status(401).json({error: "Sorry, an error occurred, invalid credentials sent"})
+    }
+    
+})
+
+// loading more members from the database
+router.get("/loadMoreMembers",(req,res)=>{
+    console.log('loadMoreMembers request arrived')
+    console.log(parseInt(req.query.lastMember))
+    const lastId = parseInt(req.query.lastMember)
+    if(!isNaN(lastId)){
+        let sql = `SELECT * FROM members WHERE member_id > ? LIMIT 50`
+        db.query(sql,[lastId],(err, result) =>{
+            if(err){
+                return res.status(500).json({error: "Sorry, an error occurred, trying to fetch"})
+            }
+            else{
+                console.log('====================================');
+                console.log(result);
+                console.log('====================================');
+                return res.json({members:result})
+            }
+        })
+    }
+    else{
+        return res.status(500).json({error: "Sorry, an error occurred"})
+    }
+})
+// fetch all site newsletter subscribers
+router.get("/siteSubscribers",(req,res)=>{
+    console.log('siteSubscribers request arrived')
+    let sql = "SELECT * FROM subscribers LIMIT 50;SELECT COUNT(*) as total FROM subscribers"
+    db.query(sql,(err, result) =>{
+        if(err){
+            return res.status(404).json({message: "Sorry, an error occurred"})
+        }
+        if(result.length !== 0){
+            console.log(result)
+            return res.json({subscribers:result[0],total:result[1][0].total})
+        }
+        return res.json({message: "Sorry no member found yet"})
+        
+    })
+    
+})
+// loading more site subscribers from the database
+router.get("/loadMoreSubscribers",(req,res)=>{
+    console.log('loadMoreSubscribers request arrived')
+    console.log(parseInt(req.query.lastSubscriber))
+    const lastId = parseInt(req.query.lastSubscriber)
+    if(!isNaN(lastId)){
+        let sql = `SELECT * FROM subscribers WHERE id > ? LIMIT 50`
+        db.query(sql,[lastId],(err, result) =>{
+            if(err){
+                return res.status(500).json({error: "Sorry, an error occurred, trying to fetch"})
+            }
+            else{
+                console.log('====================================');
+                console.log(result);
+                console.log('====================================');
+                return res.json({subscribers:result})
+            }
+        })
+    }
+    else{
+        return res.status(500).json({error: "Sorry, an error occurred"})
+    }
+})
+// deleting a site subscriber
+router.delete("/siteSubscribers/:userId",(req,res)=>{
+    console.log('siteSubscribers delete request arrived')
+    console.log(req.params.userId)
+    const userId = parseInt(req.params.userId)
+    if(!isNaN(userId)){
+        let sql = "DELETE  FROM subscribers WHERE id = ?"
+        db.query(sql,[userId],(err, result) =>{
+            if(err){
+                return res.status(500).json({error: "Sorry, an error occurred"})
+            }
+            console.log(result)
+            return res.json({success:true,userId,message: "Subscriber delted sucessfully"})
+        })
+    }
+    else{
+        return res.status(401).json({error: "Sorry, an error occurred, invalid credentials sent"})
+    }
+    
+})
 // adding blog post to database
 const IMAGE_DIR = "./public/post_images/";
 const IMAGE_FILENAME = "fileToUpload";
 const INPUT_SIZE = 7
 const acceptImageFile = handleImageFileUpload(IMAGE_DIR,IMAGE_FILENAME,INPUT_SIZE)
-router.post('/addpost', async (req,res) =>{
+router.post('/addpost', acceptImageFile.fileUpload, async (req,res) =>{
     let postStatus = false
     let isError = false
-    await acceptImageFile.uploadFile(req,res,(err) =>{
-        console.log(req.files)
-        if(err) return res.status(400).json({postStatus,message: "Only .png, .jpg or .jpeg format allowed"})
         const fileurl = req.protocol + '://'+ req.get('host')
-        let postBg = fileurl + '/post_images/' +req.files[0].filename
+        let postBg = `${fileurl}/${req.files[0].path}`
         let localUrl = IMAGE_DIR + req.files[0].filename
         let data = JSON.parse(JSON.stringify(req.body))
         if(isEmpty(data))return res.status(400).json({postStatus,contentError:"Sorry you are not permitted to add data"})
@@ -557,12 +869,11 @@ router.post('/addpost', async (req,res) =>{
                     return res.status(500).json({postStatus,contentError:"Sorry an error occured trying to add post"})
                 }
                 postStatus = true
-                return res.json({message: 'Post Added Successfully',postStatus})
+                post.post_id = result.insertId
+                return res.json({message: 'Post Added Successfully',postStatus, post})
             })
             
         }
-        
-    })
 })
 // updating post content
 router.post('/updatePost', (req,res) =>{
@@ -592,6 +903,29 @@ router.post('/updatePost', (req,res) =>{
     }
     
 })
+
+// deleting a post from the database
+router.delete("/posts/:postId",(req,res)=>{
+    console.log('post delete request arrived')
+    console.log(req.params.postId)
+    const postId = parseInt(req.params.postId)
+    if(!isNaN(postId)){
+        let sql = "DELETE posts, post_comments FROM posts INNER JOIN post_comments WHERE posts.post_id = post_comments.post_id AND posts.post_id = ?"
+        db.query(sql,[postId],(err, result) =>{
+            console.log(err)
+            if(err){
+                return res.status(500).json({error: "Sorry, an error occurred"})
+            }
+            console.log(result)
+            return res.json({success:true,postId,message: "Subscriber delted sucessfully"})
+        })
+    }
+    else{
+        return res.status(401).json({error: "Sorry, an error occurred, invalid credentials sent"})
+    }
+    
+})
+
     
 // updating post background picture
 router.post('/updatePostBg', async (req,res) =>{
@@ -652,29 +986,47 @@ router.get("/posts",(req,res)=>{
     })
     
 })
+// loading more events from the database
+router.post("/adminLoadMoreEvents",(req,res)=>{
+    console.log('request arrived')
+    console.log(req.body)
+    const lastId = parseInt(req.body.lastId)
+    if(!isNaN(lastId)){
+        console.log(lastId)
+        let sql = `SELECT * FROM events WHERE event_id < ? ORDER BY event_id desc LIMIT 40`
+        db.query(sql,[lastId],(err, result) =>{
+            if(err){
+                return res.status(500).json({message: "Sorry, an error occurred"})
+            }
+            else{
+                return res.json({events:result})
+            }
+        })
+    }
+    else{
+        return res.status(403).json({message: "Sorry, an error occurred"})
+    }
+})
 // loading more post from the database
 router.post("/loadMorePosts",(req,res)=>{
     console.log('request arrived')
     console.log(req.body)
-    const lastId = req.body.lastId
+    const lastId = parseInt(req.body.lastId)
     if(!isNaN(lastId)){
         console.log(lastId)
         let sql = `SELECT * FROM posts WHERE post_id < ? ORDER BY post_id desc LIMIT 10`
         db.query(sql,[lastId],(err, result) =>{
-            // console.log(err)
-            // console.log(result)
             if(err){
-                //logError(db,{tableType: "posts",message:err.message})
-                return res.json({message: "Sorry, an error occurred"})
+                return res.status(500).json({message: "Sorry, an error occurred"})
             }
             else{
                 return res.json({posts:result})
             }
-            
         })
     }
-    // logError(db,{tableType: "posts",message:"No post id was sent to load more post"})
-    // return res.json({message: "Sorry, an error occurred"})
+    else{
+        return res.status(403).json({message: "Sorry, an error occurred"})
+    }
 })
 // loading post comments 
 router.post("/loadMoreComments",(req,res)=>{
@@ -687,38 +1039,91 @@ router.post("/loadMoreComments",(req,res)=>{
         db.query(sql,[lastId,postId],(err, result) =>{
             console.log(result)
             if(err){
-                logError(db,{tableType: "posts",message:err.message})
-                return res.json({message: "Sorry, an error occurred"})
+                return res.status(500).json({error: "Sorry, an error occurred"})
             }
             res.json({comments:result})
         })
     } 
-    logError(db,{tableType: "post_comments",message:"No post is and commenent id was sent!"})
-    return res.json({message: "Sorry, an error occurred"})   
+    else{
+        return res.status(403).json({message: "Sorry, an error occurred"})
+    }
 })
 // submitting post comment
 router.post("/postComment",(req, res) =>{
     const data = req.body
     let status = false;
+    const isError = false
     let nameError = emailError = msgError = idError = "";
-    if(data.name === "") nameError = "Enter Your Name"
-    if(data.email === "") emailError = "Enter Your Email Address"
-    if(data.message === "") msgError = "Enter Your Comment"
-    if(isNaN(data.postId)) idError = "Wrong Post Comment Sent"
-    if(nameError === "" && emailError === "" && msgError === "" && idError === ""){
+    if(data.name === "") isError = true
+    if(data.email === "") isError = true
+    if(data.message === "")  isError = true
+    if(isNaN(data.postId)) isError = true
+    if(!isError){
         const comment = {name:data.name,email:data.email,comment:data.message,date:new Date(),post_id: data.postId}
-        let sql = "INSERT INTO post_comments SET ?"
-        db.query(sql,comment,(err, result) =>{
+        let sql = "INSERT INTO post_comments SET ?; UPDATE posts SET post_comments = post_comments + 1 WHERE post_id = ?"
+        db.query(sql,[comment,data.postId],(err, result) =>{
             if(err){
-                logError(db,{tableType: "post_comments",message:err.message})
-                return res.json({nameError,emailError,msgError:"Sorry an error occurred and we're notified. We will fix it in due course.Thanks",status})
+                console.log(err)
+                return res.status(500).json({nameError,emailError,msgError:"Sorry an error occurred and we're notified. We will fix it in due course.Thanks",status})
             }
-            return res.json({nameError,emailError,status:true,comment})
+            console.log('comment inserted and post incremented')
+            return res.status(200).json({message:"Comment posted successfully",status:true,comment})
         })
     }
-    return res.json({nameError,emailError,msgError,idError,status})
+    else{
+        return res.status(403).json({isError,error:"Make sure all fields are filled"})
+    }
+    
+})
+// fetching post comment by an admin
+router.get(`/admin/comments/`,(req,res) =>{
+    console.log('fetch comment request arrived')
+    console.log(req.query)
+    const post_id = req.query.post_id
+    const type = req.query.type
+    const comment_id = req.query.comment_id
+    console.log(post_id, type, comment_id)
+    if(isNaN(post_id) || isNaN(comment_id) || type === ""){
+        return res.status(403).json({error:"Sorry you can not get the comments of an unknown post"})
+    }
+    if(type === "first"){
+        let query = "SELECT * FROM post_comments WHERE post_id = ? ORDER BY comment_id DESC LIMIT 10";
+        db.query(query, [post_id], (err, data) =>{
+            console.log(data)
+            if(err) return res.status(500).json({error: true})
+            console.log("first time")
+            return res.json({comments: data})
+        })
+    }
+    else{
+        let query = "SELECT * FROM post_comments WHERE post_id = ? AND comment_id < ? ORDER BY comment_id DESC LIMIT 10";
+        db.query(query, [post_id, comment_id], (err, data) =>{
+            console.log(data)
+            if(err) return res.status(500).json({error: true})
+            console.log("loading more")
+            console.log(data)
+            return res.json({comments: data})
+        })
+    }
 })
 
+// deleting a particular post comment
+router.delete('/admin/comment/:post_id/:comment_id', (req, res) =>{
+    const comment_id = parseInt(req.params.comment_id)
+    const post_id = parseInt(req.params.post_id)
+    console.log(req.params.comment_id)
+    if(isNaN(comment_id) || isNaN(post_id)){
+        return res.status(403).json({error: "Wrong data sent, maybe you don't permission to perfoerm this operation."})
+    }
+    let sql = "DELETE  FROM post_comments WHERE comment_id = ?; UPDATE posts SET post_comments = post_comments - 1 WHERE post_id = ?"
+    db.query(sql,[comment_id, post_id],(err, result) =>{
+        if(err){
+            return res.status(500).json({error: "Sorry, an error occurred"})
+        }
+        console.log(result)
+        return res.json({success:true,comment_id,message: "Post comment deleted successfully"})
+    })
+})
 // getting a particular post comments
 router.get("/comments/:slug",(req,res) =>{
     const slug = req.params.slug
@@ -759,75 +1164,21 @@ router.get("/post_details/:slug",(req,res) =>{
 })
 
 
-
-// add course to mysql database.
-const DIR = "./public/course-images/";
-const FILENAME = "courseBanner";
-const SIZE = 7
-const acceptFile = handleImageFileUpload(DIR,FILENAME,SIZE)
-router.post('/addcourse', async (req,res) =>{
-    console.log(req.body)
-    let postStatus = false
-    await acceptFile.uploadFile(req,res,(err) =>{
-        if(req.files.length === 0 || !isEmpty(err)){
-            let courseBgError = "Please select a file"
-            if(err !== undefined) courseBgError = err.error
-            return res.json({postStatus,courseBgError})
-        }
-        const fileurl = req.protocol + '://'+ req.get('host')
-        let courseUrl = DIR +req.files[0].filename
-        let courseBanner = fileurl + '/public/course-images/' +req.files[0].filename
-        console.log(courseBanner)
-        let data = JSON.parse(JSON.stringify(req.body))
-        console.log(data)
-        let contentError = titleError = descriptError  = durationError  = tagError = "";
-        if(isEmpty(data))return res.json({postStatus,contentError:"Sorry you are not permitted to add a course"})
-        if(data.courseContent === "") contentError = "Please enter more course content"
-        if(data.courseTitle === "") titleError = "Please enter course title"
-        if(data.courseDescript === "") descriptError = "Please enter course description"
-        if(data.courseTags === "") tagError = "Please enter course tags" 
-        if(data.courseDuration === "" || data.courseDuration === "Select Duration") durationError = "Please select course duration" 
-        if(contentError === "" && titleError === "" && durationError === "" && descriptError === "" && tagError === ""){
-            
-            let courseSlug = slugify(data.courseTitle,{lower:true,strict:true}).trim()
-            let course = {courseContent:data.courseContent,courseTitle:data.courseTitle,courseDescript:data.courseDescript,courseTags:data.courseTags,courseDuration:data.courseDuration,courseBanner, courseDate: new Date(), courseSlug}
-            console.log(courseSlug)
-            let sql = "INSERT INTO courses SET ?"
-            db.query(sql, course, (err, result) =>{
-                if(err){
-                    const data = {contentError:"An error occurred,please try again later",titleError,descriptError,durationError,tagError,postStatus}
-                    return removeUploadedFile(res,fileurl,'error',data)
-                }
-                postStatus = true
-                res.json({contentError,titleError,descriptError,durationError,tagError,postStatus})
-            })
-            
-        }
-        else{
-            const data = {contentError:"An error occurred,please try again later",titleError,descriptError,durationError,tagError,postStatus}
-            
-            
-        }
-    })
-    
-
-})
-
-//adding a newsletter to the database
+//adding a subscriber to the database
 router.post('/newsletter', (req,res) =>{
     let data = JSON.parse(JSON.stringify(req.body))
     if(data.email.trim() !== ""){
-        let query = `SELECT * FROM newsletter WHERE email = ?`
+        let query = `SELECT * FROM subscribers WHERE email = ?`
         db.query(query, [data.email], (err, result) =>{
             if(err){
-                logError(db,{tableType:"newsletter",message:error.message})
+                logError(db,{tableType:"subscribers",message:error.message})
                 res.json({message:"Sorry an error occurred"})
             }
             if(result.length === 0){
-                let sql = 'INSERT INTO newsletter SET ?'
+                let sql = 'INSERT INTO subscribers SET ?'
                 db.query(sql, {email:data.email,status:1}, (err, result) =>{
                     if(err) {
-                        logError(db,{tableType:"newsletter",message:err.message})
+                        logError(db,{tableType:"subscribers",message:err.message})
                         res.json({message:"Sorry an error occurred"})
                     }
                     res.json({message: "Thank you for signing up."})
@@ -836,7 +1187,7 @@ router.post('/newsletter', (req,res) =>{
             res.json({message:"Email address already exist"})
         })       
     }
-    logError(db,{tableType:"newsletter",message:"An empty form or invalid email was submitted"})
+    logError(db,{tableType:"subscribers",message:"An empty form or invalid email was submitted"})
     res.json({message:"Please enter a valid email"})
 })
 // when making a donation

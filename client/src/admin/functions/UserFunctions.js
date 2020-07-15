@@ -1,29 +1,29 @@
+
 import axios from 'axios'
 
 export const LoginUser = async (user) =>{
     try {
         let response =  await axios.post('/login',user)
-        return response
+        return {response}
     } catch (error) {
-        return error
+        return {error}
     }
 }
 
 export const RegisterUser = async (user) =>{
     try {
         let response =  await axios.post('/register',user)
-        return response
+        return {response}
     } catch (error) {
-        console.log(error.message)
+        return {error}
     }
 }
 export const logoutUser = async () =>{
     try {
         let response =  await axios.post('/logout',{})
-        console.log(response)
-        return response
+        return {response}
     } catch (error) {
-        console.log(error.message)
+        return {error}
     }
 }
 export const  isEmpty = (obj) =>{

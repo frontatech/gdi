@@ -34,8 +34,11 @@ import {
 import axios from 'axios'
 import JoditEditor from "jodit-react";
 import GeneralHeader from "../../Headers/GeneralHeader";
+import { AdminEventContext } from "admin/context/AdminEventContext";
+import { ADD_EVENT } from "admin/actions/actions";
 
 const AddEvent = ({history}) => {
+  const {dispatch} = useContext(AdminEventContext)
   const editor = useRef(null)
     const config = {
         readonly: false,
@@ -51,6 +54,7 @@ const AddEvent = ({history}) => {
     const [eventEndDate, setEventEndDate] = useState('')
     const [eventTags, setEventTags] = useState('')
     const [eventBg, setEventBg] = useState([])
+    const [eventTime, setEventTime] = useState('12:00 PM')
     // error variables
     const [titleError, setTitleError] = useState('')
     const [descriptError, setDescriptError] = useState('')
@@ -84,12 +88,14 @@ const AddEvent = ({history}) => {
         setTagError('')
         setEventTags(e.target.value)
     }
+    const handleTimeChange = e =>{
+      setEventTime(e.target.value)
+    }
     const handleImageUpload = e =>{
         setEventBgError('')
         setEventBg(e.target.files)
     }
     const resetFormInputs = () =>{
-        document.getElementById('#eventForm').reset()
     }
     const handleSubmit = e =>{
         e.preventDefault()
@@ -132,21 +138,24 @@ const AddEvent = ({history}) => {
             formData.append('eventDescript', eventDescript)
             formData.append('eventTags', eventTags)
             formData.append('eventStartDate',eventStartDate)
+            formData.append('eventTime', eventTime)
             formData.append('eventEndDate',eventEndDate)
             formData.append('eventContent', eventContent)
            console.log('passed validation')
-           axios.post('/addEvent',formData, {withCredentials: true, headers:{
-            'Content-Type': 'multipart/form-data', 'Access-Control-Allow-Origin':"*"
-                }}).then(res =>{
+           axios.post('/addEvent',formData).then(res =>{
                     setLoader(false)
+                    console.log(resetFormInputs)
                     if(res.data.eventStatus){
                         // RESET EVENT FORM
                         resetFormInputs()
-                        return setContentError(res.data.message)
+                        setContentError(res.data.message)
+                        dispatch({type: ADD_EVENT, payload: [res.data.event]})
                     }
                 }).catch(error =>{
                   setLoader(false)
-                  setContentError("An error occurred, please check your input fields and try again")
+                  if(error.response){
+                    setContentError(error.response.data.error)
+                  }
                 })
               }
             }
@@ -244,7 +253,7 @@ const AddEvent = ({history}) => {
                         </Col>
                       </Row>
                       <Row>
-                        <Col lg="6">
+                        <Col lg="4">
                           <FormGroup>
                             <label
                               className="form-control-label"
@@ -264,7 +273,7 @@ const AddEvent = ({history}) => {
                           <p className="text-danger">{startDateError}</p>
                           <br />
                         </Col>
-                        <Col lg="6">
+                        <Col lg="4">
                           <FormGroup>
                             <label
                               className="form-control-label"
@@ -282,6 +291,67 @@ const AddEvent = ({history}) => {
                           </FormGroup>
                           <br />
                           <p className="text-danger">{endDateError}</p>
+                          <br />
+                        </Col>
+                        <Col lg="4">
+                          <FormGroup>
+                            <label
+                              className="form-control-label"
+                              htmlFor="eventEndDate"
+                            >
+                              Event Start Time
+                            </label>
+                            <select value={eventTime} onChange={handleTimeChange} className="form-control">
+                              <option>12:00 PM</option>
+                              <option>12:30 PM</option>
+                              <option>1:00 PM</option>
+                              <option>1:30 PM</option>
+                              <option>2:00 PM</option>
+                              <option>2:30 PM</option>
+                              <option>3:00 PM</option>
+                              <option>3:30 PM</option>
+                              <option>4:00 PM</option>
+                              <option>4:30 PM</option>
+                              <option>5:00 PM</option>
+                              <option>5:30 PM</option>
+                              <option>6:00 PM</option>
+                              <option>6:30 PM</option>
+                              <option>7:00 PM</option>
+                              <option>7:30 PM</option>
+                              <option>8:00 PM</option>
+                              <option>8:30 PM</option>
+                              <option>9:00 PM</option>
+                              <option>9:30 PM</option>
+                              <option>10:00 PM</option>
+                              <option>10:30 PM</option>
+                              <option>11:00 PM</option>
+                              <option>11:30 PM</option>
+                              <option>12:00 AM</option>
+                              <option>12:30 AM</option>
+                              <option>11:30 AM</option>
+                              <option>11:00 AM</option>
+                              <option>10:30 AM</option>
+                              <option>10:00 AM</option>
+                              <option>9:30 AM</option>
+                              <option>9:00 AM</option>
+                              <option>8:30 AM</option>
+                              <option>8:00 AM</option>
+                              <option>7:30 AM</option>
+                              <option>7:00 AM</option>
+                              <option>6:30 AM</option>
+                              <option>6:00 AM</option>
+                              <option>5:30 AM</option>
+                              <option>5:00 AM</option>
+                              <option>4:30 AM</option>
+                              <option>4:00 AM</option>
+                              <option>3:30 AM</option>
+                              <option>3:00 AM</option>
+                              <option>2:30 AM</option>
+                              <option>2:00 AM</option>
+                              <option>1:30 AM</option>
+                              <option>1:00 AM</option>              
+                            </select>
+                          </FormGroup>
                           <br />
                         </Col>
                       </Row>

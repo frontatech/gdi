@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 // reactstrap components
 import {
@@ -34,9 +34,12 @@ import {
 import GeneralHeader from "../../Headers/GeneralHeader.js";
 import Axios from "axios";
 import {NigerianStates} from "../variables/NigerianStates.js";
+import { ADD_GDI_MEMBER } from "admin/actions/actions.js";
+import { MembersContext } from "admin/context/MembersContext.js";
 
 
 const AddGDIMember = () =>{
+  const {dispatch} = useContext(MembersContext)
   const [loader, setLoader] = useState(false)
   const [message, setMessage] = useState('')
   const [surname, setSurname] = useState('')
@@ -100,6 +103,7 @@ const AddGDIMember = () =>{
   const [secondaryQuaError, setSecondaryQuaError] = useState('')
   const [secondaryDateError, setSecondaryDateError] = useState('')
   const [tertiaryOneError, setTertiaryOneError] = useState('')
+  const [disciplineError, setDisciplineError] = useState('')
   const [tertiaryOneQuaError, setTertiaryOneQuaError] = useState('')
   const [tertiaryOneDateError, setTertiaryOneDateError] = useState('')
   const [tertiaryTwoError, setTertiaryTwoError] = useState('')
@@ -108,7 +112,6 @@ const AddGDIMember = () =>{
   const [tertiaryThreeError, setTertiaryThreeError] = useState('')
   const [tertiaryThreeQuaError, setTertiaryThreeQuaError] = useState('')
   const [tertiaryThreeDateError, setTertiaryThreeDateError] = useState('')
-  const [disciplineError, setDisciplineError] = useState('')
   const [ngoOneError, setNgoOneError] = useState('')
   const [positionOneError, setPositionOneError] = useState('')
   const [responsibilityOneError, setResponsibilityOneError] = useState('')
@@ -446,7 +449,8 @@ const AddGDIMember = () =>{
           return setMessage(res.data.error)
         }
         resetFormInputs()
-        return setMessage(res.data.message)
+        setMessage(res.data.message)
+        dispatch({type: ADD_GDI_MEMBER, payload:[res.data.member]})
       }).catch(error =>{
         setLoader(false)
         if(error.response){

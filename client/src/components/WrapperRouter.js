@@ -1,4 +1,4 @@
-import React, { Fragment} from 'react'
+import React, { Fragment, useEffect} from 'react'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import MainNavbar from './Navbars/MainNavbar'
 import Home from './Home'
@@ -22,8 +22,20 @@ import { PostProvider } from 'context/PostContext'
 import { UserAuthProvider } from 'admin/context/UserAuthContext'
 import { MembersProvider } from 'admin/context/MembersContext'
 import { AdminPostsProvider } from 'admin/context/AdminPostsContext'
+import { AdminEventProvider } from 'admin/context/AdminEventContext'
+import { AdminUsersProvider } from 'admin/context/AdminUsersContext'
+import { NewsletterProvider } from 'admin/context/NewsletterContext'
+import { GeneralProvider } from 'admin/context/GeneralContext'
 
-const WrapperRouter = ({location}) => {
+const WrapperRouter = ({location,history}) => {
+    useEffect(() => {
+        // return history.listen((locate) =>{
+        //     console.log("you changed the page to"+locate.pathname)
+        // })
+        console.log(location.pathname)
+        return () => {
+        }
+    }, [])
     const mainSitePath = ['/','/about-us','/blog','/our-services','/gallery','/management','/contact-us','/partnership','/events','/donate','/post_details/','post_details']
     return (
         <Fragment>
@@ -47,9 +59,17 @@ const WrapperRouter = ({location}) => {
                     </CommentProvider>
                     <UserAuthProvider>
                         <MembersProvider>
-                            <AdminPostsProvider>
-                                <Route path="/admin" render={props => <AdminLayout {...props} />} />
-                            </AdminPostsProvider>
+                            <AdminUsersProvider>
+                                <AdminPostsProvider>
+                                    <AdminEventProvider>
+                                        <NewsletterProvider>
+                                            <GeneralProvider>
+                                                <Route path="/admin" render={props => <AdminLayout {...props} />} />
+                                            </GeneralProvider>
+                                        </NewsletterProvider>
+                                    </AdminEventProvider>
+                                </AdminPostsProvider>
+                            </AdminUsersProvider>
                         </MembersProvider>
                         <Route path="/auth" render={props => <AuthLayout {...props} />} />
                     </UserAuthProvider>

@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 // node.js library that concatenates classes (strings)
 import classnames from "classnames";
 // javascipt plugin for creating charts
@@ -45,29 +45,32 @@ import {
   chartExample1,
   chartExample2
 } from "./variables/charts.js";
-
+import {Redirect} from "react-router-dom"
 import Header from "../Headers/Header.js";
+import { UserAuthContext } from "admin/context/UserAuthContext.js";
 
-class Home extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      activeNav: 1,
-      chartExample1Data: "data1"
-    };
+const Home = props => {
+  const {user:{isAuthenticated}} = useContext(UserAuthContext)
+  const [state, setState] = useState({
+    activeNav: 1,
+    chartExample1Data: "data1"
+  })
+  useEffect(() => {
     if (window.Chart) {
       parseOptions(Chart, chartOptions());
     }
-  }
-  toggleNavs = (e, index) => {
+    return () => {
+      
+    }
+  }, [])
+  const toggleNavs = (e, index) => {
     e.preventDefault();
-    this.setState({
-      activeNav: index,
-      chartExample1Data:
-        this.state.chartExample1Data === "data1" ? "data2" : "data1"
-    });
+    setState(previous => ({...previous,activeNav: index,
+      chartExample1Data: previous.chartExample1Data === "data1" ? "data2" : "data1"
+    }))
   };
-  render() {
+
+    if(!isAuthenticated) return <Redirect to={{pathname:"/auth/login",state:{from: props.location}}} />
     return (
       <>
         <Header />
@@ -89,10 +92,10 @@ class Home extends React.Component {
                         <NavItem>
                           <NavLink
                             className={classnames("py-2 px-3", {
-                              active: this.state.activeNav === 1
+                              active: state.activeNav === 1
                             })}
                             href="#pablo"
-                            onClick={e => this.toggleNavs(e, 1)}
+                            onClick={e => toggleNavs(e, 1)}
                           >
                             <span className="d-none d-md-block">Month</span>
                             <span className="d-md-none">M</span>
@@ -101,11 +104,11 @@ class Home extends React.Component {
                         <NavItem>
                           <NavLink
                             className={classnames("py-2 px-3", {
-                              active: this.state.activeNav === 2
+                              active: state.activeNav === 2
                             })}
                             data-toggle="tab"
                             href="#pablo"
-                            onClick={e => this.toggleNavs(e, 2)}
+                            onClick={e => toggleNavs(e, 2)}
                           >
                             <span className="d-none d-md-block">Week</span>
                             <span className="d-md-none">W</span>
@@ -119,7 +122,7 @@ class Home extends React.Component {
                   {/* Chart */}
                   <div className="chart">
                     <Line
-                      data={chartExample1[this.state.chartExample1Data]}
+                      data={chartExample1[state.chartExample1Data]}
                       options={chartExample1.options}
                       getDatasetAtEvent={e => console.log(e)}
                     />
@@ -342,7 +345,6 @@ class Home extends React.Component {
         </Container>
       </>
     );
-  }
 }
 
 export default Home;

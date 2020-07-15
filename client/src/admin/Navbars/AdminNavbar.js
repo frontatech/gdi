@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 // reactstrap components
 import {
@@ -34,18 +34,31 @@ import {
   Container,
   Media
 } from "reactstrap";
+import { useCookies } from "react-cookie";
+import { logoutUser } from "admin/functions/UserFunctions";
+import { UserAuthContext } from "admin/context/UserAuthContext";
+import { LOG_OUT } from "admin/actions/actions";
 
-class AdminNavbar extends React.Component {
-  render() {
+
+const AdminNavbar =  props =>{
+  const {user:{user},dispatch} = useContext(UserAuthContext)
+  const [cookies, setCookie,removeCookie] = useCookies(['idgLocalToken','idgAToken','idgRefreshToken'])
+  const handleLogout = async (e) =>{
+    e.preventDefault()
+    const res = await logoutUser()
+    console.log(res)
+    removeCookie('idgLocalToken',{path:'/'})
+    dispatch({type: LOG_OUT,payload:{}})   
+  }
     return (
       <>
         <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
           <Container fluid>
             <Link
               className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"
-              to="/"
+              to="/admin/home"
             >
-              {this.props.brandText}
+              {props.brandText}
             </Link>
             <Form className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
               <FormGroup className="mb-0">
@@ -71,7 +84,7 @@ class AdminNavbar extends React.Component {
                     </span>
                     <Media className="ml-2 d-none d-lg-block">
                       <span className="mb-0 text-sm font-weight-bold">
-                        Jessica Jones
+                        {user.username}
                       </span>
                     </Media>
                   </Media>
@@ -84,20 +97,8 @@ class AdminNavbar extends React.Component {
                     <i className="ni ni-single-02" />
                     <span>My profile</span>
                   </DropdownItem>
-                  <DropdownItem to="/admin/user-profile" tag={Link}>
-                    <i className="ni ni-settings-gear-65" />
-                    <span>Settings</span>
-                  </DropdownItem>
-                  <DropdownItem to="/admin/user-profile" tag={Link}>
-                    <i className="ni ni-calendar-grid-58" />
-                    <span>Activity</span>
-                  </DropdownItem>
-                  <DropdownItem to="/admin/user-profile" tag={Link}>
-                    <i className="ni ni-support-16" />
-                    <span>Support</span>
-                  </DropdownItem>
                   <DropdownItem divider />
-                  <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
+                  <DropdownItem href="#pablo" onClick={e => handleLogout(e)}>
                     <i className="ni ni-user-run" />
                     <span>Logout</span>
                   </DropdownItem>
@@ -108,7 +109,6 @@ class AdminNavbar extends React.Component {
         </Navbar>
       </>
     );
-  }
 }
 
 export default AdminNavbar;

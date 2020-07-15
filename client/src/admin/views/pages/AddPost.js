@@ -32,17 +32,16 @@ import {
 } from "reactstrap";
 // core components
 import axios from 'axios'
-import JoditEditor from "jodit-react";
+
+import SunEditor, {buttonList} from 'suneditor-react';
+import 'suneditor/dist/css/suneditor.min.css';
+
 import GeneralHeader from "../../Headers/GeneralHeader";
+import { AdminPostsContext } from "admin/context/AdminPostsContext";
+import { ADD_POST } from "admin/actions/actions";
 
 const AddPost = ({history}) => {
-  const editor = useRef(null)
-    const config = {
-        readonly: false,
-        uploader:{
-            insertImageAsBase64URI: true
-        }
-    }
+  const {dispatch} = useContext(AdminPostsContext)
     // post variables
     const [postTitle, setPostTitle] = useState('')
     const [postAuthor, setPostAuthor] = useState('')
@@ -63,6 +62,16 @@ const AddPost = ({history}) => {
     const [postTypeError, setTypeError] = useState('')
     const [loader, setLoader] = useState(false)
     // event functions
+    const handleImageSunUpload = (targetImgElement, index, state, imageInfo, remainingFilesCount)=>{
+      console.log(targetImgElement, index, state, imageInfo, remainingFilesCount)
+    }
+    const uploadHandler = () =>{
+      // return "http://localhost:5000/public/post_images/GDI_IMG_1594331383567.png"
+    }
+    const handleFileUpload = (xmlHttp, info, core) =>{
+      console.log(xmlHttp, info, core)
+      // return "http://localhost:5000/public/post_images/GDI_IMG_1594331383567.png"
+    }
     const handleAuthorChange = (e) =>{
         setAuthorError('')
         setPostAuthor(e.target.value)
@@ -163,7 +172,9 @@ const AddPost = ({history}) => {
                     if(data.postStatus){
                         // RESET POST FORM
                         resetFormInputs()
-                        return setContentError(data.message)
+                        setContentError(data.message)
+                        dispatch({type:ADD_POST,payload:[data.post]})
+                        
                     }
                 }).catch(error =>{
                   setLoader(false)
@@ -188,7 +199,7 @@ const AddPost = ({history}) => {
                   </Row>
                 </CardHeader>
                 <CardBody className="bg-white">
-                  <Form>
+                  <form>
                     <div className="pl-lg-4">
                       <Row>
                         <Col lg="6">
@@ -268,14 +279,14 @@ const AddPost = ({history}) => {
                     <div className="pl-lg-4">
                         <h6 className="heading-p text-muted">Post Content</h6>
                           <div className="pl-lg-4">
-                            <JoditEditor
-                                    ref={editor}
-                                    value={postContent}
-                                    config={config}
-                                    tabIndex={1} // tabIndex of textarea
-                                    onBlur={newContent => handleContentChange(newContent)} 
-                                    onChange={newContent => {}}
-                            />
+                          <SunEditor  placeholder="Please type here..." setDefaultStyle="font-family: cursive; font-size: 14px;" height="500" enableToolbar={true} onChange={handleContentChange} onImageUpload={handleImageSunUpload} imageUploadHandler={handleFileUpload}
+                          setOptions={
+                              { 
+                              height: 200,
+                              buttonList: buttonList.complex,
+                              
+                              }
+                              } />
                           </div>
                           <br />
                         <p className="text-danger">{contentError}</p><br/>
@@ -292,7 +303,7 @@ const AddPost = ({history}) => {
                             </Button>
                         </div>
                     </div>
-                  </Form>
+                  </form>
                 </CardBody>
               </Card>
             </Col>

@@ -85,7 +85,6 @@ const RequestFund = ({history}) => {
         setRequestBg(e.target.files)
     }
     const resetFormInputs = () =>{
-        document.getElementById('#requestForm').reset()
     }
 
     const handleSubmit = e =>{

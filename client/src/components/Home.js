@@ -19,8 +19,8 @@ const Home = ({location}) => {
     ScrollTop(location)
     return (
         <Fragment>
-            {/* <HomeCarousel /> */}
-            <LandingPageHeader title="Welcome To Grassroots Development Initiative" background={require("assets/img/gdi7.jpg")} subtitle="For Good Governance & Capacity Building" />
+            <HomeCarousel />
+            {/* <LandingPageHeader title="Welcome To Grassroots Development Initiative" background={require("assets/img/gdi7.jpg")} subtitle="For Good Governance & Capacity Building" /> */}
             <HomeSection1 />
             <SectionCoreValues />
             <SectionVolunteer />

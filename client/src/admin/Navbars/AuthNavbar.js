@@ -29,7 +29,7 @@ import {
   Row,
   Col
 } from "reactstrap";
-import brandLogo from "../assets/img/brand/argon-react-white.png"
+import brandLogo from "../assets/img/brand/gdi-logo.png"
 
 class AdminNavbar extends React.Component {
   render() {
@@ -53,7 +53,7 @@ class AdminNavbar extends React.Component {
                     <Link to="/">
                       <img
                         alt="..."
-                        src={require("../assets/img/brand/argon-react.png")}
+                        src={require("../assets/img/brand/gdi-logo.png")}
                       />
                     </Link>
                   </Col>
@@ -68,7 +68,7 @@ class AdminNavbar extends React.Component {
                   </Col>
                 </Row>
               </div>
-              <Nav className="ml-auto" navbar>
+              {/* <Nav className="ml-auto" navbar>
                 <NavItem>
                   <NavLink className="nav-link-icon" to="/" tag={Link}>
                     <i className="ni ni-planet" />
@@ -105,7 +105,7 @@ class AdminNavbar extends React.Component {
                     <span className="nav-link-inner--text">Profile</span>
                   </NavLink>
                 </NavItem>
-              </Nav>
+              </Nav> */}
             </UncontrolledCollapse>
           </Container>
         </Navbar>

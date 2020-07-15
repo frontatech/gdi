@@ -15,14 +15,23 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useContext } from "react";
 
 // reactstrap components
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
 import { Link } from "react-router-dom";
+import { AdminEventContext } from "admin/context/AdminEventContext";
+import { AdminPostsContext } from "admin/context/AdminPostsContext";
+import { GeneralContext } from "admin/context/GeneralContext";
+import { NewsletterContext } from "admin/context/NewsletterContext";
+import { MembersContext } from "admin/context/MembersContext";
 
-class Header extends React.Component {
-  render() {
+const Header = () =>{
+  const {eventState:{totalEvents}} = useContext(AdminEventContext)
+  const {postState: {totalPosts}} = useContext(AdminPostsContext)
+  const {gdiFiles: {totalFiles}} = useContext(GeneralContext)
+  const {mainState: {totalSubscribers}} = useContext(NewsletterContext)
+  const {memberState: {totalMembers}} = useContext(MembersContext)
     return (
       <>
         <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
@@ -42,7 +51,7 @@ class Header extends React.Component {
                             <Link to="/admin/posts">Posts</Link>
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            350,897
+                            {totalPosts}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -101,7 +110,7 @@ class Header extends React.Component {
                           >
                             <Link to="/admin/members">GDI Members</Link>
                           </CardTitle>
-                          <span className="h2 font-weight-bold mb-0">924</span>
+                          <span className="h2 font-weight-bold mb-0">{totalMembers}</span>
                         </div>
                         <Col className="col-auto">
                           <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">
@@ -159,10 +168,10 @@ class Header extends React.Component {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            Events
+                            <Link to="/admin/events">Events</Link>
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            350,897
+                            {totalEvents}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -189,10 +198,10 @@ class Header extends React.Component {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            Gallery
+                            <Link to="/admin/gallery">Gallery</Link>
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            350,897
+                            {totalFiles}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -219,10 +228,10 @@ class Header extends React.Component {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            Newsletter Subscribers
+                            <Link to="/admin/subscribers">Newsletter Subscribers</Link>
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            350,897
+                            {totalSubscribers}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -277,7 +286,6 @@ class Header extends React.Component {
         </div>
       </>
     );
-  }
 }
 
 export default Header;
